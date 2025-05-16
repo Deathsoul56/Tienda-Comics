@@ -57,4 +57,14 @@
 
 .add-to-cart:hover {
   background-color: #218838;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #dc3545;
 } 

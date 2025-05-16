@@ -1,6 +1,22 @@
-# Getting Started with Create React App
+# 🏪 Tienda de Cómics
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bienvenido a **Tienda de Cómics**, una aplicación web moderna para explorar y gestionar tu colección de cómics favoritos. Este proyecto está desarrollado con una arquitectura de cliente-servidor que incluye un frontend en React y un backend en Node.js con Express.
+
+## 🚀 Características Principales
+
+- Catálogo completo de cómics
+- Búsqueda y filtrado de cómics
+- Interfaz de usuario intuitiva y responsiva
+- Gestión de inventario
+- Panel de administración para gestionar el catálogo
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Frontend**: React, React Router, Context API
+- **Backend**: Node.js, Express
+- **Base de Datos**: SQL Server
+- **Estilos**: CSS3, Flexbox/Grid
+- **Herramientas**: Git, npm, dotenv
 
 ## Available Scripts
 
