@@ -1,30 +1,61 @@
+
 # Tienda de Cómics
 
-Este proyecto es una tienda de cómics creada con React, TypeScript y Vite.
+Proyecto fullstack para gestionar y visualizar cómics usando React, TypeScript, Vite (frontend) y Express + SQL Server (backend).
 
 ## Características
-- Visualización de cómics
-- Carrito de compras
+- Visualización de catálogo de cómics
+- Consulta de cómics desde base de datos SQL Server
 - Navegación con React Router
-- Estilos modernos
+- Estilos modernos con CSS
 
 ## Instalación
+
+### Frontend (Vite + React)
 ```bash
 npm install
 ```
 
-## Ejecución
+### Backend (Express)
 ```bash
-npm run dev
+cd server
+npm install
 ```
 
-## Estructura sugerida
-- `src/components`: Componentes reutilizables
-- `src/pages`: Páginas principales (Home, Carrito, Detalle de cómic)
-- `src/routes`: Configuración de rutas
+## Ejecución
+
+### Frontend
+```bash
+npm start
+```
+
+### Backend
+```bash
+cd server
+node index.js
+```
+o si tienes TypeScript:
+```bash
+npx ts-node index.ts
+```
+
+## Estructura del proyecto
+- `src/` : Código fuente del frontend
+  - `components/` : Componentes reutilizables (ej. CatalogoComics)
+  - `App.tsx` : Componente principal
+- `server/` : Backend Express y scripts SQL
+  - `index.ts` : Servidor Express principal
+  - `sql/` : Scripts y consultas SQL
+
+## Uso
+1. Asegúrate de tener una base de datos SQL Server con la tabla `Comics`.
+2. Configura las variables de entorno en `server/.env`:
+   - `DB_SERVER`, `DB_DATABASE`, `DB_USER`, `DB_PASSWORD`, `PORT`
+3. Inicia el backend y frontend como se indica arriba.
+4. Accede a la app en [http://localhost:3000](http://localhost:3000).
 
 ## Personalización
-Agrega tus cómics y personaliza los estilos según tu preferencia.
+Agrega tus cómics en la base de datos y personaliza los estilos en `App.css`.
 
 # React + TypeScript + Vite
 

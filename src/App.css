@@ -1,3 +1,58 @@
+/* Botón moderno global para toda la app */
+.btn-modern {
+  background: linear-gradient(90deg, #222 0%, #646cff 100%);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.5em 1.5em;
+  border: none;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 4px 16px #0004;
+  transition: background 0.3s, box-shadow 0.3s;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 0.5em;
+}
+.btn-modern:hover, .btn-modern:focus {
+  background: linear-gradient(90deg, #535bf2 0%, #646cff 100%);
+  box-shadow: 0 6px 24px #535bf288;
+}
+/* Estilos globales para los select y botones del formulario de filtros */
+select {
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  border: 1px solid #646cff;
+  background: #222;
+  color: #fff;
+  font-size: 1em;
+  min-width: 140px;
+  outline: none;
+  box-shadow: 0 2px 8px #0002;
+  margin: 0 0.5em;
+}
+
+select:focus {
+  border-color: #535bf2;
+}
+
+button[type="submit"] {
+  padding: 0.5em 1.5em;
+  border-radius: 8px;
+  border: none;
+  background: #646cff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0002;
+  margin: 0 0.5em;
+}
+
+button[type="submit"]:hover {
+  background: #535bf2;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;
