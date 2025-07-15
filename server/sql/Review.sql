@@ -61,3 +61,20 @@ VALUES (
     4.8, -- Calificación (de 1 a 5)
     'Batman: The Dark Knight Returns es una obra cumbre del cómic de superhéroes. Frank Miller redefine al Caballero Oscuro en un futuro distópico de manera magistral. La narrativa es oscura y compleja, explorando temas de envejecimiento, moralidad y el papel de un vigilante en la sociedad. El arte es distintivo y poderoso, contribuyendo a la atmósfera sombría de la historia. Un cómic esencial para cualquier fan de Batman y del medio en general.'
 );
+
+-- Spiderman
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    1,   -- ID del cómic Spiderman
+    17,  -- ID del usuario (no es 1 ni 2)
+    4.7, -- Calificación
+    'Spiderman: El regreso del Duende Verde es una montaña rusa de emociones. La lucha interna de Peter Parker entre su vida personal y su deber como héroe está perfectamente retratada. Los villanos son complejos y la acción nunca decae. El arte es dinámico y los diálogos tienen el toque clásico de humor de Spidey. Una lectura que te atrapa desde la primera página.'
+);
+
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    1,   -- ID del cómic Spiderman
+    34,  -- ID del usuario (no es 1 ni 2)
+    4.3, -- Calificación
+    'La saga de Spiderman contra Venom es simplemente espectacular. La tensión entre Eddie Brock y Peter Parker añade profundidad a la historia, y las escenas de acción son impresionantes. Me encantó cómo exploran el lado humano de Spiderman y sus dilemas morales. Sin duda, uno de los mejores arcos del personaje.'
+);

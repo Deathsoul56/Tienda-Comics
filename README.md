@@ -26,13 +26,13 @@ npm install
 
 ### Frontend
 ```bash
-npm start
+npm run dev
 ```
 
 ### Backend
 ```bash
-cd server
-node index.js
+npx tsc
+node dist/index.js
 ```
 o si tienes TypeScript:
 ```bash
