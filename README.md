@@ -31,6 +31,7 @@ npm run dev
 
 ### Backend
 ```bash
+cd .\server\
 npx tsc
 node dist/index.js
 ```

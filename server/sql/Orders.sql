@@ -1,142 +1,62 @@
 -- Insertar datos en la tabla Orders
 USE Cazuela
 
+
+-- Ordenes de 2024
 INSERT INTO Orders (user_id, items)
 VALUES
--- Cliente comprando múltiples cómics, incluyendo 3 unidades del cómic 1
 (1, '[{"comic_id": 1, "quantity": 3}, {"comic_id": 2, "quantity": 1}]'),
-
--- Cliente comprando dos cómics diferentes en cantidades unitarias
 (23, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 4, "quantity": 1}]'),
-
--- Tony Stark (usuario 7) comprando varios cómics, incluyendo 3 unidades del cómic 8
 (7, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 5, "quantity": 1}, {"comic_id": 8, "quantity": 3}]'),
-
--- Doctor Strange (usuario 15) comprando cómics con 2 unidades del cómic 4
 (15, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 4, "quantity": 2}]'),
-
--- Cliente comprando tres cómics diferentes, con 2 unidades del cómic 15
 (2, '[{"comic_id": 12, "quantity": 1}, {"comic_id": 15, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
-
--- Cliente comprando 4 unidades del cómic 7 y 1 unidad del cómic 9
-(5, '[{"comic_id": 7, "quantity": 4}, {"comic_id": 9, "quantity": 1}]');
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
--- Usuario 9 comprando múltiples cómics con 3 unidades del cómic 14
+(5, '[{"comic_id": 7, "quantity": 4}, {"comic_id": 9, "quantity": 1}]'),
 (9, '[{"comic_id": 3, "quantity": 2}, {"comic_id": 11, "quantity": 1}, {"comic_id": 14, "quantity": 3}]'),
-
--- Dos órdenes separadas: usuario 3 compra 2 cómics y usuario 15 compra con 3 unidades del cómic 13
 (3, '[{"comic_id": 4, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
 (15, '[{"comic_id": 10, "quantity": 1}, {"comic_id": 13, "quantity": 3}]'),
-
--- Usuario 27 comprando tres cómics con múltiples cantidades
 (27, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 16, "quantity": 1}, {"comic_id": 19, "quantity": 2}]'),
-
--- Tres órdenes individuales: compras simples y múltiples
 (13, '[{"comic_id": 6, "quantity": 1}]'),
 (4, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 15, "quantity": 1}]'),
 (11, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 9, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
-
--- Más órdenes variadas con diferentes cantidades
 (23, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 13, "quantity": 1}, {"comic_id": 19, "quantity": 3}]'),
 (6, '[{"comic_id": 3, "quantity": 1}]'),
 (18, '[{"comic_id": 5, "quantity": 2}]'),
-
--- Último grupo de órdenes incluyendo una compra grande de 5 unidades
 (19, '[{"comic_id": 7, "quantity": 1}]'),
 (8, '[{"comic_id": 4, "quantity": 3}, {"comic_id": 16, "quantity": 1}]'),
-(25,
- '[{"comic_id": 2, "quantity": 1}, {"comic_id": 9, "quantity": 1}, {"comic_id": 14, "quantity": 2}, {"comic_id": 17, "quantity": 5}]');
-
-
--- More orders for 2024
-INSERT INTO Orders (user_id, items)
-VALUES
+(25, '[{"comic_id": 2, "quantity": 1}, {"comic_id": 9, "quantity": 1}, {"comic_id": 14, "quantity": 2}, {"comic_id": 17, "quantity": 5}]'),
 (12, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 2, "quantity": 1}, {"comic_id": 3, "quantity": 1}]'),
-
-(16,
- '[{"comic_id": 15, "quantity": 1}, {"comic_id": 16, "quantity": 1}, {"comic_id": 17, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
-
+(16, '[{"comic_id": 15, "quantity": 1}, {"comic_id": 16, "quantity": 1}, {"comic_id": 17, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
 (21, '[{"comic_id": 7, "quantity": 5}, {"comic_id": 8, "quantity": 3}]'),
-
 (14, '[{"comic_id": 4, "quantity": 2}, {"comic_id": 11, "quantity": 1}]'),
-
 (17, '[{"comic_id": 1, "quantity": 1}]'),
-
 (22, '[{"comic_id": 13, "quantity": 2}, {"comic_id": 19, "quantity": 2}, {"comic_id": 6, "quantity": 1}]'),
-
 (10, '[{"comic_id": 5, "quantity": 1}, {"comic_id": 6, "quantity": 1}, {"comic_id": 7, "quantity": 1}]'),
-
 (20, '[{"comic_id": 12, "quantity": 1}, {"comic_id": 14, "quantity": 1}]'),
-
-(24,
- '[{"comic_id": 3, "quantity": 2}, {"comic_id": 9, "quantity": 1}, {"comic_id": 15, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
-
+(24, '[{"comic_id": 3, "quantity": 2}, {"comic_id": 9, "quantity": 1}, {"comic_id": 15, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
 (26, '[{"comic_id": 10, "quantity": 1}, {"comic_id": 16, "quantity": 1}]'),
-
 (5, '[{"comic_id": 2, "quantity": 1}, {"comic_id": 3, "quantity": 1}, {"comic_id": 4, "quantity": 1}]'),
-
 (8, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 5, "quantity": 2}]'),
-
 (13, '[{"comic_id": 7, "quantity": 10}, {"comic_id": 8, "quantity": 8}, {"comic_id": 9, "quantity": 5}]'),
-
 (19, '[{"comic_id": 11, "quantity": 1}, {"comic_id": 15, "quantity": 1}]'),
-
 (22, '[{"comic_id": 6, "quantity": 1}, {"comic_id": 12, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
-
 (11, '[{"comic_id": 13, "quantity": 1}, {"comic_id": 14, "quantity": 1}, {"comic_id": 15, "quantity": 1}]'),
-
 (25, '[{"comic_id": 1, "quantity": 5}, {"comic_id": 4, "quantity": 5}, {"comic_id": 7, "quantity": 5}]'),
-
 (16, '[{"comic_id": 16, "quantity": 1}, {"comic_id": 17, "quantity": 1}]'),
-
 (9, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 8, "quantity": 1}, {"comic_id": 19, "quantity": 1}]'),
-
 (27, '[{"comic_id": 10, "quantity": 1}]'),
-
-(3, '[{"comic_id": 5, "quantity": 1}, {"comic_id": 9, "quantity": 1}]');
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
--- Usuario comprando un solo cómic popular
+(3, '[{"comic_id": 5, "quantity": 1}, {"comic_id": 9, "quantity": 1}]'),
 (15, '[{"comic_id": 42, "quantity": 1}]'),
-
--- Usuario comprando varios cómics de una serie
 (68, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 13, "quantity": 1}]'),
-
--- Coleccionista comprando cómics raros
 (92, '[{"comic_id": 87, "quantity": 1}, {"comic_id": 88, "quantity": 1}, {"comic_id": 89, "quantity": 1}]'),
-
--- Compra típica de un lector casual
 (33, '[{"comic_id": 5, "quantity": 1}, {"comic_id": 19, "quantity": 1}]'),
-
--- Usuario comprando un cómic nuevo recién lanzado
 (7, '[{"comic_id": 76, "quantity": 1}]'),
-
--- Compra grande de un cliente frecuente
 (54, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 27, "quantity": 2}, {"comic_id": 56, "quantity": 1}]'),
-
--- Usuario comprando cómics para regalo
 (81, '[{"comic_id": 34, "quantity": 3}]'),
-
--- Compra de cómics variados
 (29, '[{"comic_id": 61, "quantity": 1}, {"comic_id": 62, "quantity": 1}]'),
-
--- Usuario comprando cómics clásicos
 (77, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 2, "quantity": 1}]'),
-
--- Compra de cómics de diferentes géneros
-(46, '[{"comic_id": 45, "quantity": 1}, {"comic_id": 67, "quantity": 1}, {"comic_id": 92, "quantity": 1}]');
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
+(46, '[{"comic_id": 45, "quantity": 1}, {"comic_id": 67, "quantity": 1}, {"comic_id": 92, "quantity": 1}]'),
 (28, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 2, "quantity": 1}]'),
-(32,
- '[{"comic_id": 25, "quantity": 1}, {"comic_id": 26, "quantity": 1}, {"comic_id": 27, "quantity": 1}, {"comic_id": 28, "quantity": 1}]'),
+(32, '[{"comic_id": 25, "quantity": 1}, {"comic_id": 26, "quantity": 1}, {"comic_id": 27, "quantity": 1}, {"comic_id": 28, "quantity": 1}]'),
 (45, '[{"comic_id": 5, "quantity": 10}]'),
 (36, '[{"comic_id": 8, "quantity": 1}]'),
 (19, '[{"comic_id": 12, "quantity": 1}, {"comic_id": 35, "quantity": 1}, {"comic_id": 68, "quantity": 1}]'),
@@ -194,12 +114,7 @@ VALUES
 (67, '[{"comic_id": 14, "quantity": 5}, {"comic_id": 15, "quantity": 5}]'),
 (91, '[{"comic_id": 77, "quantity": 1}, {"comic_id": 78, "quantity": 1}]'),
 (69, '[{"comic_id": 64, "quantity": 2}]'),
-(88, '[{"comic_id": 95, "quantity": 1}, {"comic_id": 96, "quantity": 1}, {"comic_id": 97, "quantity": 1}]');
-
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
+(88, '[{"comic_id": 95, "quantity": 1}, {"comic_id": 96, "quantity": 1}, {"comic_id": 97, "quantity": 1}]'),
 (15, '[{"comic_id": 43, "quantity": 2}, {"comic_id": 44, "quantity": 1}]'),
 (28, '[{"comic_id": 3, "quantity": 3}, {"comic_id": 7, "quantity": 2}]'),
 (35, '[{"comic_id": 21, "quantity": 1}, {"comic_id": 22, "quantity": 1}, {"comic_id": 23, "quantity": 1}]'),
@@ -249,12 +164,7 @@ VALUES
 (43, '[{"comic_id": 69, "quantity": 2}, {"comic_id": 70, "quantity": 1}]'),
 (55, '[{"comic_id": 1, "quantity": 4}]'),
 (68, '[{"comic_id": 40, "quantity": 2}, {"comic_id": 41, "quantity": 2}]'),
-(81, '[{"comic_id": 60, "quantity": 3}]');
-
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
+(81, '[{"comic_id": 60, "quantity": 3}]'),
 (33, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 5, "quantity": 1}]'),
 (45, '[{"comic_id": 8, "quantity": 3}, {"comic_id": 12, "quantity": 2}]'),
 (27, '[{"comic_id": 15, "quantity": 1}, {"comic_id": 18, "quantity": 1}, {"comic_id": 20, "quantity": 1}]'),
@@ -304,110 +214,97 @@ VALUES
 (30, '[{"comic_id": 25, "quantity": 1}]'),
 (48, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 5, "quantity": 1}, {"comic_id": 8, "quantity": 1}]'),
 (65, '[{"comic_id": 15, "quantity": 5}, {"comic_id": 20, "quantity": 2}]'),
-(89, '[{"comic_id": 30, "quantity": 1}, {"comic_id": 35, "quantity": 1}, {"comic_id": 40, "quantity": 1}]');
-
-
-
-INSERT INTO Orders (user_id, items)
-VALUES (34, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
-       (41, '[{"comic_id": 12, "quantity": 3}, {"comic_id": 15, "quantity": 2}]'),
-       (53, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 3, "quantity": 1}, {"comic_id": 7, "quantity": 1}]'),
-       (67, '[{"comic_id": 20, "quantity": 4}]'),
-       (72, '[{"comic_id": 9, "quantity": 2}, {"comic_id": 11, "quantity": 1}]'),
-       (85, '[{"comic_id": 6, "quantity": 3}, {"comic_id": 14, "quantity": 2}]'),
-       (93, '[{"comic_id": 17, "quantity": 1}, {"comic_id": 19, "quantity": 1}]'),
-       (26, '[{"comic_id": 4, "quantity": 5}]'),
-       (38, '[{"comic_id": 10, "quantity": 2}, {"comic_id": 13, "quantity": 2}]'),
-       (45, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 16, "quantity": 1}]'),
-       (58, '[{"comic_id": 18, "quantity": 4}]'),
-       (64, '[{"comic_id": 7, "quantity": 1}, {"comic_id": 9, "quantity": 1}]'),
-       (77, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
-       (89, '[{"comic_id": 3, "quantity": 3}]'),
-       (95, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 15, "quantity": 1}]'),
-       (32, '[{"comic_id": 1, "quantity": 4}]'),
-       (46, '[{"comic_id": 11, "quantity": 2}, {"comic_id": 14, "quantity": 1}]'),
-       (59, '[{"comic_id": 6, "quantity": 3}]'),
-       (71, '[{"comic_id": 16, "quantity": 2}, {"comic_id": 19, "quantity": 1}]'),
-       (84, '[{"comic_id": 4, "quantity": 2}, {"comic_id": 7, "quantity": 2}]'),
-       (91, '[{"comic_id": 13, "quantity": 1}, {"comic_id": 17, "quantity": 1}]'),
-       (28, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 5, "quantity": 2}]'),
-       (35, '[{"comic_id": 9, "quantity": 4}]'),
-       (49, '[{"comic_id": 18, "quantity": 1}, {"comic_id": 20, "quantity": 1}]'),
-       (62, '[{"comic_id": 3, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
-       (75, '[{"comic_id": 10, "quantity": 3}]'),
-       (88, '[{"comic_id": 15, "quantity": 2}, {"comic_id": 16, "quantity": 2}]'),
-       (96, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 4, "quantity": 1}]'),
-       (33, '[{"comic_id": 7, "quantity": 5}]'),
-       (44, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 19, "quantity": 1}]');
-
-INSERT INTO Orders (user_id, items)
-VALUES (57, '[{"comic_id": 6, "quantity": 3}, {"comic_id": 11, "quantity": 2}]'),
-       (69, '[{"comic_id": 14, "quantity": 4}]'),
-       (82, '[{"comic_id": 2, "quantity": 1}, {"comic_id": 5, "quantity": 1}]'),
-       (94, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 17, "quantity": 1}]'),
-       (31, '[{"comic_id": 13, "quantity": 3}, {"comic_id": 16, "quantity": 2}]'),
-       (42, '[{"comic_id": 3, "quantity": 4}]'),
-       (55, '[{"comic_id": 9, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
-       (68, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 7, "quantity": 2}]'),
-       (81, '[{"comic_id": 10, "quantity": 3}, {"comic_id": 15, "quantity": 1}]'),
-       (90, '[{"comic_id": 4, "quantity": 5}]'),
-       (27, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 19, "quantity": 1}]'),
-       (39, '[{"comic_id": 6, "quantity": 1}, {"comic_id": 8, "quantity": 1}]'),
-       (52, '[{"comic_id": 14, "quantity": 3}]'),
-       (65, '[{"comic_id": 2, "quantity": 4}, {"comic_id": 5, "quantity": 2}]'),
-       (78, '[{"comic_id": 11, "quantity": 2}, {"comic_id": 17, "quantity": 1}]'),
-       (87, '[{"comic_id": 3, "quantity": 3}, {"comic_id": 16, "quantity": 2}]'),
-       (97, '[{"comic_id": 7, "quantity": 1}, {"comic_id": 9, "quantity": 1}]'),
-       (29, '[{"comic_id": 13, "quantity": 4}]'),
-       (43, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
-       (56, '[{"comic_id": 10, "quantity": 3}, {"comic_id": 15, "quantity": 2}]'),
-       (70, '[{"comic_id": 4, "quantity": 5}]'),
-       (83, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
-       (92, '[{"comic_id": 6, "quantity": 3}, {"comic_id": 19, "quantity": 1}]'),
-       (30, '[{"comic_id": 2, "quantity": 4}]'),
-       (40, '[{"comic_id": 14, "quantity": 2}, {"comic_id": 17, "quantity": 1}]'),
-       (54, '[{"comic_id": 5, "quantity": 3}, {"comic_id": 11, "quantity": 2}]'),
-       (66, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 7, "quantity": 1}]'),
-       (79, '[{"comic_id": 16, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
-       (86, '[{"comic_id": 1, "quantity": 3}]'),
-       (98, '[{"comic_id": 9, "quantity": 4}, {"comic_id": 13, "quantity": 2}]');
-
-INSERT INTO Orders (user_id, items)
-VALUES (37, '[{"comic_id": 4, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
-       (48, '[{"comic_id": 15, "quantity": 3}, {"comic_id": 19, "quantity": 1}]'),
-       (60, '[{"comic_id": 6, "quantity": 4}]'),
-       (73, '[{"comic_id": 2, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
-       (80, '[{"comic_id": 7, "quantity": 3}, {"comic_id": 17, "quantity": 2}]'),
-       (99, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 10, "quantity": 1}]'),
-       (36, '[{"comic_id": 14, "quantity": 2}, {"comic_id": 16, "quantity": 1}]'),
-       (47, '[{"comic_id": 1, "quantity": 5}]'),
-       (61, '[{"comic_id": 11, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
-       (74, '[{"comic_id": 5, "quantity": 3}]'),
-       (85, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 13, "quantity": 2}]'),
-       (95, '[{"comic_id": 4, "quantity": 4}, {"comic_id": 9, "quantity": 1}]'),
-       (35, '[{"comic_id": 15, "quantity": 1}, {"comic_id": 19, "quantity": 1}]'),
-       (50, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 7, "quantity": 2}]'),
-       (63, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 16, "quantity": 1}]'),
-       (76, '[{"comic_id": 3, "quantity": 5}]'),
-       (89, '[{"comic_id": 6, "quantity": 2}, {"comic_id": 10, "quantity": 1}]'),
-       (97, '[{"comic_id": 14, "quantity": 3}, {"comic_id": 17, "quantity": 2}]'),
-       (34, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 8, "quantity": 1}]'),
-       (45, '[{"comic_id": 11, "quantity": 4}]'),
-       (58, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 13, "quantity": 1}]'),
-       (71, '[{"comic_id": 4, "quantity": 3}, {"comic_id": 18, "quantity": 1}]'),
-       (84, '[{"comic_id": 9, "quantity": 2}, {"comic_id": 15, "quantity": 2}]'),
-       (93, '[{"comic_id": 2, "quantity": 5}]'),
-       (32, '[{"comic_id": 7, "quantity": 1}, {"comic_id": 16, "quantity": 1}]'),
-       (46, '[{"comic_id": 12, "quantity": 3}, {"comic_id": 19, "quantity": 2}]'),
-       (59, '[{"comic_id": 3, "quantity": 4}]'),
-       (72, '[{"comic_id": 6, "quantity": 2}, {"comic_id": 10, "quantity": 1}]'),
-       (87, '[{"comic_id": 14, "quantity": 1}, {"comic_id": 17, "quantity": 1}]'),
-       (96, '[{"comic_id": 1, "quantity": 3}, {"comic_id": 8, "quantity": 2}]');
-
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
+(89, '[{"comic_id": 30, "quantity": 1}, {"comic_id": 35, "quantity": 1}, {"comic_id": 40, "quantity": 1}]'),
+(34, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
+(41, '[{"comic_id": 12, "quantity": 3}, {"comic_id": 15, "quantity": 2}]'),
+(53, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 3, "quantity": 1}, {"comic_id": 7, "quantity": 1}]'),
+(67, '[{"comic_id": 20, "quantity": 4}]'),
+(72, '[{"comic_id": 9, "quantity": 2}, {"comic_id": 11, "quantity": 1}]'),
+(85, '[{"comic_id": 6, "quantity": 3}, {"comic_id": 14, "quantity": 2}]'),
+(93, '[{"comic_id": 17, "quantity": 1}, {"comic_id": 19, "quantity": 1}]'),
+(26, '[{"comic_id": 4, "quantity": 5}]'),
+(38, '[{"comic_id": 10, "quantity": 2}, {"comic_id": 13, "quantity": 2}]'),
+(45, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 16, "quantity": 1}]'),
+(58, '[{"comic_id": 18, "quantity": 4}]'),
+(64, '[{"comic_id": 7, "quantity": 1}, {"comic_id": 9, "quantity": 1}]'),
+(77, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
+(89, '[{"comic_id": 3, "quantity": 3}]'),
+(95, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 15, "quantity": 1}]'),
+(32, '[{"comic_id": 1, "quantity": 4}]'),
+(46, '[{"comic_id": 11, "quantity": 2}, {"comic_id": 14, "quantity": 1}]'),
+(59, '[{"comic_id": 6, "quantity": 3}]'),
+(71, '[{"comic_id": 16, "quantity": 2}, {"comic_id": 19, "quantity": 1}]'),
+(84, '[{"comic_id": 4, "quantity": 2}, {"comic_id": 7, "quantity": 2}]'),
+(91, '[{"comic_id": 13, "quantity": 1}, {"comic_id": 17, "quantity": 1}]'),
+(28, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 5, "quantity": 2}]'),
+(35, '[{"comic_id": 9, "quantity": 4}]'),
+(49, '[{"comic_id": 18, "quantity": 1}, {"comic_id": 20, "quantity": 1}]'),
+(62, '[{"comic_id": 3, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
+(75, '[{"comic_id": 10, "quantity": 3}]'),
+(88, '[{"comic_id": 15, "quantity": 2}, {"comic_id": 16, "quantity": 2}]'),
+(96, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 4, "quantity": 1}]'),
+(33, '[{"comic_id": 7, "quantity": 5}]'),
+(44, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 19, "quantity": 1}]'),
+(57, '[{"comic_id": 6, "quantity": 3}, {"comic_id": 11, "quantity": 2}]'),
+(69, '[{"comic_id": 14, "quantity": 4}]'),
+(82, '[{"comic_id": 2, "quantity": 1}, {"comic_id": 5, "quantity": 1}]'),
+(94, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 17, "quantity": 1}]'),
+(31, '[{"comic_id": 13, "quantity": 3}, {"comic_id": 16, "quantity": 2}]'),
+(42, '[{"comic_id": 3, "quantity": 4}]'),
+(55, '[{"comic_id": 9, "quantity": 1}, {"comic_id": 18, "quantity": 1}]'),
+(68, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 7, "quantity": 2}]'),
+(81, '[{"comic_id": 10, "quantity": 3}, {"comic_id": 15, "quantity": 1}]'),
+(90, '[{"comic_id": 4, "quantity": 5}]'),
+(27, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 19, "quantity": 1}]'),
+(39, '[{"comic_id": 6, "quantity": 1}, {"comic_id": 8, "quantity": 1}]'),
+(52, '[{"comic_id": 14, "quantity": 3}]'),
+(65, '[{"comic_id": 2, "quantity": 4}, {"comic_id": 5, "quantity": 2}]'),
+(78, '[{"comic_id": 11, "quantity": 2}, {"comic_id": 17, "quantity": 1}]'),
+(87, '[{"comic_id": 3, "quantity": 3}, {"comic_id": 16, "quantity": 2}]'),
+(97, '[{"comic_id": 7, "quantity": 1}, {"comic_id": 9, "quantity": 1}]'),
+(29, '[{"comic_id": 13, "quantity": 4}]'),
+(43, '[{"comic_id": 1, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
+(56, '[{"comic_id": 10, "quantity": 3}, {"comic_id": 15, "quantity": 2}]'),
+(70, '[{"comic_id": 4, "quantity": 5}]'),
+(83, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
+(92, '[{"comic_id": 6, "quantity": 3}, {"comic_id": 19, "quantity": 1}]'),
+(30, '[{"comic_id": 2, "quantity": 4}]'),
+(40, '[{"comic_id": 14, "quantity": 2}, {"comic_id": 17, "quantity": 1}]'),
+(54, '[{"comic_id": 5, "quantity": 3}, {"comic_id": 11, "quantity": 2}]'),
+(66, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 7, "quantity": 1}]'),
+(79, '[{"comic_id": 16, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
+(86, '[{"comic_id": 1, "quantity": 3}]'),
+(98, '[{"comic_id": 9, "quantity": 4}, {"comic_id": 13, "quantity": 2}]'),
+(37, '[{"comic_id": 4, "quantity": 2}, {"comic_id": 8, "quantity": 1}]'),
+(48, '[{"comic_id": 15, "quantity": 3}, {"comic_id": 19, "quantity": 1}]'),
+(60, '[{"comic_id": 6, "quantity": 4}]'),
+(73, '[{"comic_id": 2, "quantity": 2}, {"comic_id": 12, "quantity": 1}]'),
+(80, '[{"comic_id": 7, "quantity": 3}, {"comic_id": 17, "quantity": 2}]'),
+(99, '[{"comic_id": 3, "quantity": 1}, {"comic_id": 10, "quantity": 1}]'),
+(36, '[{"comic_id": 14, "quantity": 2}, {"comic_id": 16, "quantity": 1}]'),
+(47, '[{"comic_id": 1, "quantity": 5}]'),
+(61, '[{"comic_id": 11, "quantity": 2}, {"comic_id": 18, "quantity": 1}]'),
+(74, '[{"comic_id": 5, "quantity": 3}]'),
+(85, '[{"comic_id": 8, "quantity": 2}, {"comic_id": 13, "quantity": 2}]'),
+(95, '[{"comic_id": 4, "quantity": 4}, {"comic_id": 9, "quantity": 1}]'),
+(35, '[{"comic_id": 15, "quantity": 1}, {"comic_id": 19, "quantity": 1}]'),
+(50, '[{"comic_id": 2, "quantity": 3}, {"comic_id": 7, "quantity": 2}]'),
+(63, '[{"comic_id": 12, "quantity": 2}, {"comic_id": 16, "quantity": 1}]'),
+(76, '[{"comic_id": 3, "quantity": 5}]'),
+(89, '[{"comic_id": 6, "quantity": 2}, {"comic_id": 10, "quantity": 1}]'),
+(97, '[{"comic_id": 14, "quantity": 3}, {"comic_id": 17, "quantity": 2}]'),
+(34, '[{"comic_id": 1, "quantity": 1}, {"comic_id": 8, "quantity": 1}]'),
+(45, '[{"comic_id": 11, "quantity": 4}]'),
+(58, '[{"comic_id": 5, "quantity": 2}, {"comic_id": 13, "quantity": 1}]'),
+(71, '[{"comic_id": 4, "quantity": 3}, {"comic_id": 18, "quantity": 1}]'),
+(84, '[{"comic_id": 9, "quantity": 2}, {"comic_id": 15, "quantity": 2}]'),
+(93, '[{"comic_id": 2, "quantity": 5}]'),
+(32, '[{"comic_id": 7, "quantity": 1}, {"comic_id": 16, "quantity": 1}]'),
+(46, '[{"comic_id": 12, "quantity": 3}, {"comic_id": 19, "quantity": 2}]'),
+(59, '[{"comic_id": 3, "quantity": 4}]'),
+(72, '[{"comic_id": 6, "quantity": 2}, {"comic_id": 10, "quantity": 1}]'),
+(87, '[{"comic_id": 14, "quantity": 1}, {"comic_id": 17, "quantity": 1}]'),
+(96, '[{"comic_id": 1, "quantity": 3}, {"comic_id": 8, "quantity": 2}]'),
 (3, '[{"comic_id": 51, "quantity": 1}, {"comic_id": 7, "quantity": 2}]'),
 (56, '[{"comic_id": 64, "quantity": 2}, {"comic_id": 22, "quantity": 1}]'),
 (48, '[{"comic_id": 41, "quantity": 2}, {"comic_id": 56, "quantity": 7}, {"comic_id": 16, "quantity": 3}]'),
@@ -507,12 +404,7 @@ VALUES
 (13, '[{"comic_id": 47, "quantity": 5}]'),
 (4, '[{"comic_id": 26, "quantity": 1}, {"comic_id": 13, "quantity": 3}]'),
 (54, '[{"comic_id": 63, "quantity": 1}]'),
-(14, '[{"comic_id": 24, "quantity": 18}, {"comic_id": 5, "quantity": 2}, {"comic_id": 54, "quantity": 1}, {"comic_id": 45, "quantity": 1}]');
-
-
-
-INSERT INTO Orders (user_id, items)
-VALUES
+(14, '[{"comic_id": 24, "quantity": 18}, {"comic_id": 5, "quantity": 2}, {"comic_id": 54, "quantity": 1}, {"comic_id": 45, "quantity": 1}]'),
 (94, '[{"comic_id": 79, "quantity": 2}, {"comic_id": 24, "quantity": 1}, {"comic_id": 30, "quantity": 1}, {"comic_id": 30, "quantity": 7}, {"comic_id": 7, "quantity": 6}]'),
 (71, '[{"comic_id": 31, "quantity": 7}]'),
 (67, '[{"comic_id": 30, "quantity": 1}, {"comic_id": 62, "quantity": 1}, {"comic_id": 23, "quantity": 3}, {"comic_id": 62, "quantity": 2}]'),
@@ -1015,6 +907,11 @@ VALUES
 (44, '[{"comic_id": 50, "quantity": 2}]');
 
 
+-- Ordenes de 2025
+INSERT INTO Orders (user_id, items)
+VALUES
+()
+
 -- Update all orders with random dates and times in 2024
 UPDATE Orders
 SET order_date = DATEADD(
@@ -1024,4 +921,15 @@ SET order_date = DATEADD(
                 ABS(CHECKSUM(NEWID()) % 366), -- Random day in 2024 (it's a leap year)
                 '2024-01-01')
                  )
-WHERE order_id >= 0;
+WHERE order_id <= 500;
+
+-- Update all orders with random dates and times in 2024
+UPDATE Orders
+SET order_date = DATEADD(
+        SECOND,
+        ABS(CHECKSUM(NEWID()) % 86400), -- Random seconds in a day (0-86399)
+        DATEADD(DAY,
+                ABS(CHECKSUM(NEWID()) % 366), -- Random day in 2024 (it's a leap year)
+                '2024-01-01')
+                 )
+WHERE order_id > 500;

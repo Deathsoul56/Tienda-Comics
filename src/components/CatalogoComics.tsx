@@ -64,10 +64,30 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAdd
     if (onSearch) onSearch(initialFilters);
   };
 
+  const handleAddToCart = (comic: Comic) => {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find((item: any) => item.comic_id === comic.comic_id);
+    if (existing) {
+      existing.quantity = (existing.quantity || 1) + 1;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } else {
+      cart.push({
+        id: comic.comic_id,
+        comic_id: comic.comic_id,
+        title: comic.title,
+        price: comic.price,
+        image: comic.image,
+        quantity: 1
+      });
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    window.dispatchEvent(new Event('storage'));
+  };
+
   return (
-    <>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '2rem', marginTop: '2rem' }}>
-        <aside style={{ minWidth: 260, background: '#181818', borderRadius: 12, padding: '2rem 1rem', boxShadow: '0 2px 8px #0003', color: '#fff' }}>
+    <div className="catalogo-panoramico">
+      <div style={{ width: '100vw', maxWidth: '100vw', margin: 0, padding: 0, boxSizing: 'border-box', display: 'block' }}>
+        <aside className="catalogo-sidebar-flotante">
           <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <label style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Autor</label>
             <select name="author" value={filters.author} onChange={handleInputChange}>
@@ -97,24 +117,46 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAdd
               ))}
             </select>
             <button type="submit" className="btn-modern">Buscar</button>
-            <button type="button" onClick={handleClearFilters} className="btn-modern">Borrar filtros</button>
+            <button type="button" className="btn-modern" style={{ background: '#222', color: '#fff', border: '1px solid #646cff' }} onClick={handleClearFilters}>Borrar filtros</button>
           </form>
         </aside>
-        <section style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0 0 1rem 0' }}>
-            <div style={{ color: '#bbb', fontSize: '1.1em', fontWeight: 'bold' }}>{`Muestra ${comics.length} de ${comics.length} cómics`}</div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-              <label htmlFor="orderSelect" style={{ color: '#fff', fontWeight: 'bold', marginBottom: '0.3rem' }}>Ordenar por</label>
-              <select id="orderSelect" value={order} onChange={handleOrderChange} style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #646cff', minWidth: '180px', background: '#222', color: '#fff', fontWeight: 'bold' }}>
-                <option value="position">Posición</option>
-                <option value="title_asc">Nombre: A a Z</option>
-                <option value="title_desc">Nombre: Z a A</option>
-                <option value="price_asc">Precio: de menor a mayor</option>
-                <option value="price_desc">Precio: de mayor a menor</option>
-              </select>
-            </div>
+        {/* Fila de controles: contador a la izquierda, ordenar a la derecha */}
+        <div style={{
+          marginLeft: '90px',
+          marginTop: '2rem',
+          marginBottom: '1.5rem',
+          paddingLeft: 0,
+          paddingRight: '23vw',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: 'auto',
+          maxWidth: 'calc(100vw - 90px - 2vw)'
+        }}>
+          <div style={{ color: '#bbb', fontSize: '1.1em', fontWeight: 'bold' }}>{`Muestra ${comics.length} de ${comics.length} cómics`}</div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem' }}>
+            <label htmlFor="orderSelect" style={{ color: '#fff', fontWeight: 'bold', marginBottom: 0 }}>Ordenar por</label>
+            <select id="orderSelect" value={order} onChange={handleOrderChange} style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #646cff', minWidth: '180px', background: '#222', color: '#fff', fontWeight: 'bold' }}>
+              <option value="position">Posición</option>
+              <option value="title_asc">Nombre: A a Z</option>
+              <option value="title_desc">Nombre: Z a A</option>
+              <option value="price_asc">Precio: de menor a mayor</option>
+              <option value="price_desc">Precio: de mayor a menor</option>
+            </select>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "3rem", padding: "3rem 2rem", background: "#222", borderRadius: "18px" }}>
+        </div>
+        {/* Grid de productos panorámico */}
+        <section className="catalogo-grid-panoramico">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1.5rem',
+            width: '100%',
+            alignItems: 'stretch',
+            justifyItems: 'center',
+            paddingBottom: '2rem',
+          }}>
             {comics.map((comic) => {
               // Validación: ¿ya está en el carrito?
               const isInCart = typeof window !== 'undefined' && (() => {
@@ -174,18 +216,13 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAdd
                   </div>
                   <button
                     className="btn-modern"
-                    style={{ marginTop: '1em', opacity: isInCart ? 0.6 : 1, cursor: isInCart ? 'not-allowed' : 'pointer', alignSelf: 'stretch' }}
-                    disabled={isInCart}
+                    style={{ marginTop: '1em', opacity: isInCart ? 1 : 1, cursor: 'pointer', alignSelf: 'stretch' }}
                     onClick={e => {
                       e.stopPropagation();
-                      if (isInCart) {
-                        alert('Este cómic ya está en el carrito');
-                        return;
-                      }
-                      onAddToCart && onAddToCart(comic);
+                      handleAddToCart(comic);
                     }}
                   >
-                    {isInCart ? 'Ya en el carrito' : 'Agregar al carrito'}
+                    Agregar al carrito
                   </button>
                 </div>
               );
@@ -193,7 +230,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAdd
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 };
 

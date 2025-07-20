@@ -127,6 +127,26 @@ app.get("/reviews/:comic_id", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint para obtener las ventas mensuales (dashboard)
+app.get("/ventas-mensuales", async (req: Request, res: Response) => {
+  try {
+    await sql.connect(dbConfig);
+    const result = await sql.query(`
+      SELECT
+        YEAR(order_date) AS Year,
+        MONTH(order_date) AS Month,
+        SUM(total_amount) AS TotalSales,
+        COUNT(DISTINCT order_id) AS TotalOrders
+      FROM Orders_Details
+      GROUP BY YEAR(order_date), MONTH(order_date)
+      ORDER BY Year, Month;
+    `);
+    res.json(result.recordset);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Servidor Express escuchando en http://localhost:${port}`);
 });
