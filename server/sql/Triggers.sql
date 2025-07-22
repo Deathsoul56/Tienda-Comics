@@ -40,27 +40,32 @@ BEGIN
     -- Validar stock suficiente antes de actualizar
     IF EXISTS (
         SELECT 1
-        FROM Comics c
-        INNER JOIN inserted i
-        CROSS APPLY OPENJSON(i.items) j
-        WHERE c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT)
-          AND c.stock_quantity < CAST(JSON_VALUE(j.value, '$.quantity') AS INT)
+        FROM inserted i
+        CROSS APPLY OPENJSON(i.items) WITH (
+            comic_id INT '$.comic_id',
+            quantity INT '$.quantity'
+        ) j
+        JOIN Comics c ON c.comic_id = j.comic_id
+        WHERE c.stock_quantity < j.quantity
     )
     BEGIN
         THROW 50001, 'No hay suficiente stock para uno o más cómics en la orden.', 1;
-        ROLLBACK TRANSACTION;
         RETURN;
     END
 
     -- Actualizar sold_quantity y stock_quantity
     UPDATE c
     SET
-        sold_quantity = sold_quantity + CAST(JSON_VALUE(j.value, '$.quantity') AS INT),
-        stock_quantity = stock_quantity - CAST(JSON_VALUE(j.value, '$.quantity') AS INT)
+        sold_quantity = sold_quantity + j.quantity,
+        stock_quantity = stock_quantity - j.quantity
     FROM Comics c
-    INNER JOIN inserted i
-    CROSS APPLY OPENJSON(i.items) j
-        ON c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT);
+    JOIN (
+        SELECT
+            CAST(JSON_VALUE(j.value, '$.comic_id') AS INT) as comic_id,
+            CAST(JSON_VALUE(j.value, '$.quantity') AS INT) as quantity
+        FROM inserted i
+        CROSS APPLY OPENJSON(i.items) j
+    ) j ON c.comic_id = j.comic_id;
 END;
 GO
 
