@@ -54,12 +54,14 @@ function App() {
   const selectedComic = comics.find((c: Comic) => c.comic_id === selectedComicId) || null;
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
-        <button className="btn-modern" onClick={() => { setVista('home'); setSelectedComicId(null); }}>Inicio</button>
-        <button className="btn-modern" onClick={() => { setVista('catalogo'); setSelectedComicId(null); }}>Catálogo</button>
-        <button className="btn-modern" onClick={() => { setVista('ventas'); setSelectedComicId(null); }}>Ventas</button>
-        <button className="btn-modern" onClick={() => { setVista('carrito'); setSelectedComicId(null); }}>Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})</button>
-      </div>
+      {vista !== 'home' && (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
+          <button className="btn-modern" onClick={() => { setVista('home'); setSelectedComicId(null); }}>Inicio</button>
+          <button className="btn-modern" onClick={() => { setVista('catalogo'); setSelectedComicId(null); }}>Catálogo</button>
+          <button className="btn-modern" onClick={() => { setVista('ventas'); setSelectedComicId(null); }}>Ventas</button>
+          <button className="btn-modern" onClick={() => { setVista('carrito'); setSelectedComicId(null); }}>Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})</button>
+        </div>
+      )}
       {vista === 'catalogo' && selectedComicId === null && (
         <CatalogoComics
           comics={comics}

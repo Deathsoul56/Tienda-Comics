@@ -29,25 +29,80 @@ BEGIN
 END;
 GO
 
-
 -- Actualizar la cantidad de comics vendidos cuando se inserta una nueva orden
 CREATE TRIGGER update_comics_sold_quantity
-    ON Orders
-    AFTER INSERT
-    AS
+ON Orders
+AFTER INSERT
+AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Actualizar sold_quantity para cada comic en la orden
+    -- Validar stock suficiente antes de actualizar
+    IF EXISTS (
+        SELECT 1
+        FROM Comics c
+        INNER JOIN inserted i
+        CROSS APPLY OPENJSON(i.items) j
+        WHERE c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT)
+          AND c.stock_quantity < CAST(JSON_VALUE(j.value, '$.quantity') AS INT)
+    )
+    BEGIN
+        THROW 50001, 'No hay suficiente stock para uno o más cómics en la orden.', 1;
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+
+    -- Actualizar sold_quantity y stock_quantity
     UPDATE c
-    SET sold_quantity = sold_quantity + CAST(JSON_VALUE(j.value, '$.quantity') AS INT)
+    SET
+        sold_quantity = sold_quantity + CAST(JSON_VALUE(j.value, '$.quantity') AS INT),
+        stock_quantity = stock_quantity - CAST(JSON_VALUE(j.value, '$.quantity') AS INT)
     FROM Comics c
-             INNER JOIN inserted i
-             CROSS APPLY OPENJSON(i.items) j
-             ON c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT);
+    INNER JOIN inserted i
+    CROSS APPLY OPENJSON(i.items) j
+        ON c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT);
 END;
 GO
 
+-- Trigger para actualizar el stock de comics al insertar una compra
+CREATE TRIGGER update_comics_buy_quantity
+ON Purchases
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Sumar al stock de cada comic comprado
+    UPDATE c
+    SET stock_quantity = stock_quantity + CAST(JSON_VALUE(j.value, '$.quantity') AS INT)
+    FROM Comics c
+    INNER JOIN inserted i
+    CROSS APPLY OPENJSON(i.items) j
+        ON c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT);
+END;
+GO
+
+-- Calcular el precio total de la orden
+CREATE TRIGGER calculate_order_total
+ON ORDERS
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Procesar cada fila insertada y calcular el total
+    INSERT INTO ORDERS (user_id, items, total_amount)
+    SELECT
+        i.user_id,
+        i.items,
+        (
+            SELECT SUM(c.price * CAST(JSON_VALUE(j.value, '$.quantity') AS INT))
+            FROM OPENJSON(i.items) j
+            JOIN COMICS c ON c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT)
+        ) as total_amount
+    FROM inserted i;
+END;
+GO
 
 -- Actualizar el campo updated_at en la tabla Users
 CREATE TRIGGER update_users_timestamp
@@ -103,25 +158,3 @@ BEGIN
     INNER JOIN inserted i ON r.review_id = i.review_id;
 END;
 GO
-
-
--- Calcular el precio total de la orden
-CREATE TRIGGER calculate_order_total
-ON ORDERS
-INSTEAD OF INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    -- Procesar cada fila insertada y calcular el total
-    INSERT INTO ORDERS (user_id, items, total_amount)
-    SELECT
-        i.user_id,
-        i.items,
-        (
-            SELECT SUM(c.price * CAST(JSON_VALUE(j.value, '$.quantity') AS INT))
-            FROM OPENJSON(i.items) j
-            JOIN COMICS c ON c.comic_id = CAST(JSON_VALUE(j.value, '$.comic_id') AS INT)
-        ) as total_amount
-    FROM inserted i;
-END;

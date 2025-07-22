@@ -83,6 +83,7 @@ CREATE TABLE Purchases (
     purchase_date DATETIME DEFAULT GETDATE(),
     total_amount DECIMAL(10, 2) NOT NULL,
     status NVARCHAR(50) DEFAULT 'Pending',
+    items NVARCHAR(MAX) NOT NULL CHECK (ISJSON(items) = 1),
     created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE()
 )
@@ -130,6 +131,3 @@ FROM
                                   ) i
     LEFT JOIN Comics c ON c.comic_id = i.comic_id
 GO
-
-
-
