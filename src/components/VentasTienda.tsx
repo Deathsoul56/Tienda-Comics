@@ -27,6 +27,9 @@ const VentasTienda: React.FC = () => {
   // Filtros de año y mes (checkboxes)
   const [filtroAnios, setFiltroAnios] = useState<string[]>([]);
   const [filtroMeses, setFiltroMeses] = useState<string[]>([]);
+  
+  // Estado para mostrar/ocultar el panel de filtros
+  const [mostrarFiltros, setMostrarFiltros] = useState(true);
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -166,13 +169,65 @@ const VentasTienda: React.FC = () => {
       <h2 style={{ color: '#fff', marginBottom: '2rem', fontSize: '2.5em', textAlign: 'center', letterSpacing: '0.05em', fontWeight: 'bold' }}>Dashboard de Ventas</h2>
       {/* Dashboard de ventas mensuales */}
       <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-        {/* Cuadro flotante de filtros a la izquierda con checkboxes */}
-        <div style={{ position: 'absolute', left: '-340px', top: 0, width: 240, background: '#23234a', borderRadius: 18, boxShadow: '0 4px 32px #0007', padding: '2rem 1.5rem', zIndex: 10, color: '#fff', display: 'flex', flexDirection: 'column', gap: '1.5rem', fontWeight: 'bold' }}>
-          <div style={{ fontSize: '1.2em', marginBottom: '0.5em', textAlign: 'center' }}>Filtrar por Año y Mes</div>
-          <div style={{ marginBottom: '1em' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 6, gap: 8 }}>
-              <span>Año:</span>
-              <button type="button" onClick={() => { setFiltroAnios([]); setFiltroMeses([]); }} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 6, padding: '2px 10px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.95em' }}>Desmarcar todos</button>
+        {/* Cuadro flotante de filtros FIJO que sigue el scroll */}
+        <div style={{ 
+          position: 'fixed', 
+          left: mostrarFiltros ? '1rem' : '-240px', 
+          top: '50%', 
+          transform: 'translateY(-50%)', 
+          width: 220, 
+          background: 'rgba(35, 35, 74, 0.95)', 
+          borderRadius: 12, 
+          boxShadow: '0 6px 32px rgba(0,0,0,0.4)', 
+          padding: '1.5rem 1rem', 
+          zIndex: 1000, 
+          color: '#fff', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '1rem', 
+          fontWeight: 'bold',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(100, 108, 255, 0.3)',
+          maxHeight: '70vh',
+          overflowY: 'auto',
+          transition: 'left 0.3s ease-in-out'
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            marginBottom: '0.8rem',
+            borderBottom: '1px solid rgba(100, 108, 255, 0.3)',
+            paddingBottom: '0.4rem'
+          }}>
+            <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>Filtros</span>
+            <button
+              onClick={() => setMostrarFiltros(false)}
+              style={{
+                background: 'transparent',
+                border: '1px solid rgba(100, 108, 255, 0.5)',
+                color: '#646cff',
+                borderRadius: '6px',
+                padding: '0.3rem 0.6rem',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(100, 108, 255, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              −
+            </button>
+          </div>
+          
+          <div style={{ marginBottom: '0.8em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4, gap: 6 }}>
+              <span style={{ fontSize: '0.9em' }}>Año:</span>
+              <button type="button" onClick={() => { setFiltroAnios([]); setFiltroMeses([]); }} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '1px 8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.75em' }}>Limpiar</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {aniosDisponibles.map(anio => (
@@ -189,9 +244,9 @@ const VentasTienda: React.FC = () => {
             </div>
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 6, gap: 8 }}>
-              <span>Mes:</span>
-              <button type="button" onClick={() => setFiltroMeses([])} disabled={filtroAnios.length === 0} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 6, padding: '2px 10px', fontWeight: 'bold', cursor: filtroAnios.length === 0 ? 'not-allowed' : 'pointer', fontSize: '0.95em', opacity: filtroAnios.length === 0 ? 0.5 : 1 }}>Desmarcar todos</button>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4, gap: 6 }}>
+              <span style={{ fontSize: '0.9em' }}>Mes:</span>
+              <button type="button" onClick={() => setFiltroMeses([])} disabled={filtroAnios.length === 0} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '1px 8px', fontWeight: 'bold', cursor: filtroAnios.length === 0 ? 'not-allowed' : 'pointer', fontSize: '0.75em', opacity: filtroAnios.length === 0 ? 0.5 : 1 }}>Limpiar</button>
             </div>
             {mesesDisponibles.length === 0 && <div style={{ color: '#aaa', fontSize: '0.95em' }}>Selecciona al menos un año</div>}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -210,6 +265,51 @@ const VentasTienda: React.FC = () => {
             </div>
           </div>
         </div>
+        
+        {/* Botón tab que queda visible cuando el panel está oculto */}
+        {!mostrarFiltros && (
+          <div 
+            onClick={() => setMostrarFiltros(true)}
+            style={{
+              position: 'fixed',
+              left: '0px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '40px',
+              height: '80px',
+              background: 'rgba(35, 35, 74, 0.9)',
+              borderRadius: '0 12px 12px 0',
+              border: '1px solid rgba(100, 108, 255, 0.3)',
+              borderLeft: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              zIndex: 1000,
+              backdropFilter: 'blur(10px)',
+              transition: 'all 0.2s ease',
+              boxShadow: '2px 0 12px rgba(0,0,0,0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(100, 108, 255, 0.2)';
+              e.currentTarget.style.transform = 'translateY(-50%) translateX(2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(35, 35, 74, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) translateX(0px)';
+            }}
+          >
+            <div style={{
+              color: '#646cff',
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              transform: 'rotate(-90deg)',
+              userSelect: 'none'
+            }}>
+              Filtros
+            </div>
+          </div>
+        )}
         <div style={{ background: '#222', borderRadius: '32px', padding: '3.5rem', marginBottom: '3rem', boxShadow: '0 8px 48px #0007', maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
           <h3 style={{ color: '#fff', marginBottom: '2.5rem', fontSize: '2.3em', textAlign: 'center', letterSpacing: '0.03em', fontWeight: 'bold' }}>Ventas Mensuales</h3>
           <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
