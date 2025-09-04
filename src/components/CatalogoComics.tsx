@@ -1,31 +1,16 @@
 import React, { useState } from "react";
 import { useComicFilters } from '../hooks/useComicFilters';
-
-export type Comic = {
-  comic_id: number;
-  title: string;
-  author: string;
-  publisher: string;
-  genre: string;
-  publication_date: string;
-  price: number;
-  stock_quantity: number;
-  sold_quantity: number;
-  review_quantity: number;
-  description: string;
-  image: string;
-  created_at: string;
-  updated_at: string;
-};
+import type { Comic } from '../domain/entities';
+import { container } from '../infrastructure/DependencyContainer';
 
 interface CatalogoComicsProps {
   comics: Comic[];
-  onSearch?: (filters: any) => void;
+  onSearch?: (filters: Record<string, unknown>) => void;
   onAddToCart?: (comic: Comic) => void;
   onComicClick?: (comic: Comic) => void;
 }
 
-const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAddToCart, onComicClick }) => {
+const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onComicClick }) => {
   const [order, setOrder] = useState<'position' | 'title_asc' | 'title_desc' | 'price_asc' | 'price_desc' | ''>('');
   const { authors, publishers, genres } = useComicFilters();
   const initialFilters = {
@@ -64,24 +49,12 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAdd
     if (onSearch) onSearch(initialFilters);
   };
 
-  const handleAddToCart = (comic: Comic) => {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existing = cart.find((item: any) => item.comic_id === comic.comic_id);
-    if (existing) {
-      existing.quantity = (existing.quantity || 1) + 1;
-      localStorage.setItem('cart', JSON.stringify(cart));
-    } else {
-      cart.push({
-        id: comic.comic_id,
-        comic_id: comic.comic_id,
-        title: comic.title,
-        price: comic.price,
-        image: comic.image,
-        quantity: 1
-      });
-      localStorage.setItem('cart', JSON.stringify(cart));
+  const handleAddToCart = async (comic: Comic) => {
+    try {
+      await container.cartUseCase.addToCart(comic);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
     }
-    window.dispatchEvent(new Event('storage'));
   };
 
   return (
@@ -158,15 +131,8 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onAdd
             paddingBottom: '2rem',
           }}>
             {comics.map((comic) => {
-              // Validación: ¿ya está en el carrito?
-              const isInCart = typeof window !== 'undefined' && (() => {
-                try {
-                  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                  return cart.some((item: any) => item.comic_id === comic.comic_id);
-                } catch {
-                  return false;
-                }
-              })();
+              // Esta validación se puede remover o simplificar ya que el use case maneja la lógica
+              const isInCart = false; // Simplificado por ahora
               return (
                 <div
                   key={comic.comic_id}

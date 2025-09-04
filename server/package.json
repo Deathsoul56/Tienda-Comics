@@ -1,6 +1,27 @@
 {
+  "name": "comics-store-server",
+  "version": "1.0.0",
+  "description": "Hexagonal architecture comics store server",
+  "main": "dist/main.js",
   "type": "commonjs",
+  "scripts": {
+    "dev": "npx ts-node src/main.ts",
+    "build": "npx tsc",
+    "start": "node dist/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
-    "dotenv": "^17.2.0"
+    "dotenv": "^17.2.0",
+    "express": "^5.0.1",
+    "cors": "^2.8.5",
+    "mssql": "^11.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/mssql": "^9.1.5",
+    "@types/node": "^22.8.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

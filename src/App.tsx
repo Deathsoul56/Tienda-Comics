@@ -1,80 +1,75 @@
-import { useState, useEffect } from 'react'
 import './App.css'
 import CatalogoComics from './components/CatalogoComics';
-import type { Comic } from './components/CatalogoComics';
 import ComicDetail from './components/ComicDetail';
 import HomePage from './components/HomePage';
 import VentasTienda from './components/VentasTienda';
 import Carrito from './components/Carrito';
-import type { CartItem } from './components/Carrito';
-// import type { Comic } from './components/CatalogoComics'; // Duplicado, eliminar
+import { ErrorBoundary, Button, LoadingSpinner } from './components/common';
+import { useAppState } from './application/controllers/AppController';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
 function App() {
-  useEffect(() => {
-    const handler = (e: any) => {
-      if (e.detail === 'catalogo' || e.detail === 'ventas') setVista(e.detail);
-    };
-    window.addEventListener('changeVista', handler);
-    return () => window.removeEventListener('changeVista', handler);
-  }, []);
-  // const [count, setCount] = useState(0); // Removed unused variable
-  const [vista, setVista] = useState<'home' | 'catalogo' | 'ventas' | 'carrito'>('home');
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const saved = localStorage.getItem('cart');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-  const [comics, setComics] = useState<Comic[]>([]);
+  const { state, actions } = useAppState();
+  const { vista, cart, comics, selectedComic, selectedComicId, isLoading, error } = state;
+  const { 
+    fetchComics, 
+    addToCart, 
+    removeFromCart, 
+    updateCartQuantity, 
+    checkout,
+    setSelectedComicId,
+    navigateTo
+  } = actions;
+  if (isLoading) {
+    return <LoadingSpinner size="large" text="Cargando aplicación..." />;
+  }
 
-  const fetchComics = (params = {}) => {
-    const query = new URLSearchParams(params).toString();
-    fetch(`${API_BASE_URL}/comics${query ? `?${query}` : ''}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setComics(data);
-      })
-      .catch(() => {
-        // Error al cargar el catálogo
-      });
-  };
-
-  useEffect(() => {
-    fetchComics(); // Mostrar todo el catálogo por defecto
-  }, []);
-
-  const [selectedComicId, setSelectedComicId] = useState<number | null>(null);
-  const selectedComic = comics.find((c: Comic) => c.comic_id === selectedComicId) || null;
   return (
-    <>
+    <ErrorBoundary>
+      {error && (
+        <div style={{
+          position: 'fixed',
+          top: '1rem',
+          right: '1rem',
+          backgroundColor: '#ff6b6b',
+          color: 'white',
+          padding: '1rem',
+          borderRadius: '6px',
+          zIndex: 1000,
+          maxWidth: '300px'
+        }}>
+          {error}
+          <button 
+            onClick={() => window.location.reload()}
+            style={{
+              marginLeft: '1rem',
+              padding: '0.25rem 0.5rem',
+              backgroundColor: 'transparent',
+              border: '1px solid white',
+              color: 'white',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
       {vista !== 'home' && (
         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
-          <button className="btn-modern" onClick={() => { setVista('home'); setSelectedComicId(null); }}>Inicio</button>
-          <button className="btn-modern" onClick={() => { setVista('catalogo'); setSelectedComicId(null); }}>Catálogo</button>
-          <button className="btn-modern" onClick={() => { setVista('ventas'); setSelectedComicId(null); }}>Ventas</button>
-          <button className="btn-modern" onClick={() => { setVista('carrito'); setSelectedComicId(null); }}>Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})</button>
+          <Button onClick={() => navigateTo('home')}>Inicio</Button>
+          <Button onClick={() => navigateTo('catalogo')}>Catálogo</Button>
+          <Button onClick={() => navigateTo('ventas')}>Ventas</Button>
+          <Button onClick={() => navigateTo('carrito')}>
+            Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})
+          </Button>
         </div>
       )}
       {vista === 'catalogo' && selectedComicId === null && (
         <CatalogoComics
           comics={comics}
           onSearch={fetchComics}
-          onAddToCart={(comic: Comic) => {
-            setCart(prev => {
-              const found = prev.find(item => item.id === comic.comic_id);
-              if (found) {
-                return prev.map(item => item.id === comic.comic_id ? { ...item, quantity: item.quantity + 1 } : item);
-              }
-              return [...prev, { id: comic.comic_id, title: comic.title, price: comic.price, image: comic.image, quantity: 1 }];
-            });
-          }}
+          onAddToCart={addToCart}
           onComicClick={comic => setSelectedComicId(comic.comic_id)}
         />
       )}
@@ -86,28 +81,16 @@ function App() {
         )
       )}
       {vista === 'home' && <HomePage />}
-      {vista === 'carrito' && <Carrito
-        items={cart}
-        onRemove={(id) => setCart(cart => cart.filter(item => item.id !== id))}
-        onChangeQuantity={(id, newQuantity) => setCart(cart => cart.map(item => item.id === id ? { ...item, quantity: newQuantity } : item))}
-        onCheckout={async () => {
-          try {
-            await fetch(`${API_BASE_URL}/orders`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items: cart })
-            });
-          } catch (e) {
-            alert('Error al enviar la orden');
-            return;
-          }
-          setCart([]);
-          localStorage.removeItem('cart');
-          alert('¡Compra realizada!');
-        }}
-      />}
+      {vista === 'carrito' && (
+        <Carrito
+          items={cart}
+          onRemove={removeFromCart}
+          onChangeQuantity={updateCartQuantity}
+          onCheckout={checkout}
+        />
+      )}
       {vista === 'ventas' && <VentasTienda />}
-    </>
+    </ErrorBoundary>
   );
 }
 

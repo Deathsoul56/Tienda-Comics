@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts";
-import type { Comic } from "./CatalogoComics";
+import type { Comic } from "../domain/entities";
 
 interface Venta {
   order_id: number;

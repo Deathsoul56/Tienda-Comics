@@ -183,12 +183,13 @@ button[type="submit"]:hover {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  background: transparent;
+  background: #222;
   border-radius: 24px;
   box-shadow: 0 6px 32px #0007;
   padding: 2rem 1.5rem;
   overflow-x: auto;
   transition: box-shadow 0.2s;
+  min-height: fit-content;
 }
 
 .carrito-table {
@@ -198,7 +199,7 @@ button[type="submit"]:hover {
   border-spacing: 0;
   background: transparent;
   border-radius: 18px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 2px 16px #0005;
 }
 
@@ -222,7 +223,7 @@ button[type="submit"]:hover {
 
 .carrito-table tbody tr {
   border-bottom: 1px solid #333;
-  background: #222;
+  background: transparent;
   transition: background 0.2s;
 }
 .carrito-table tbody tr:hover {
@@ -233,7 +234,7 @@ button[type="submit"]:hover {
   display: flex;
   align-items: center;
   gap: 1.2em;
-  padding: 1em 0.5em;
+  padding: 1.5em 0.5em;
   border-radius: 12px;
 }
 
@@ -253,9 +254,12 @@ button[type="submit"]:hover {
 
 .carrito-img {
   width: 70px;
+  height: auto;
+  max-height: 100px;
   border-radius: 8px;
   box-shadow: 0 2px 8px #0003;
   transition: box-shadow 0.2s, transform 0.2s;
+  object-fit: cover;
 }
 .carrito-img:hover {
   box-shadow: 0 4px 24px #646cff77;

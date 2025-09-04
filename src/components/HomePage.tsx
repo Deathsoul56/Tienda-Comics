@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
-import type { Comic } from "./CatalogoComics";
+import type { Comic } from '../domain/entities';
 import ComicDetail from "./ComicDetail";
+import { container } from '../infrastructure/DependencyContainer';
 
 // --- Barra de navegación ---
 const NavBar: React.FC<{ onNav: (vista: string) => void; cartCount: number }> = ({ onNav, cartCount }) => (
@@ -169,9 +170,20 @@ const MasVendidos: React.FC<{ comics: Comic[]; onSelect: (comic: Comic) => void 
   );
 };
 
+// --- Interface para reviews ---
+interface Review {
+  review_id: number;
+  comic_id: number;
+  user_id: string;
+  user_name?: string;
+  rating: number;
+  review_text: string;
+  created_at: string;
+}
+
 // --- Componente para mostrar reviews de un cómic ---
 const ComicReviews: React.FC<{ comicId: number }> = ({ comicId }) => {
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/reviews/${comicId}`)
@@ -208,19 +220,32 @@ const HomePage: React.FC = () => {
   const [cartCount, setCartCount] = useState(0);
   const [selectedComic, setSelectedComic] = useState<Comic | null>(null);
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + '/comics')
-      .then(res => res.json())
-      .then(data => setComics(data));
-    // Escuchar cambios en el carrito
-    const updateCart = () => {
+    const loadData = async () => {
       try {
-        const saved = localStorage.getItem('cart');
-        setCartCount(saved ? JSON.parse(saved).reduce((sum: any, item: any) => sum + item.quantity, 0) : 0);
-      } catch { setCartCount(0); }
+        const comicsData = await container.getComicsUseCase.execute();
+        setComics(comicsData);
+        
+        const cartSummary = await container.cartUseCase.getCartSummary();
+        setCartCount(cartSummary.totalItems);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
     };
-    updateCart();
-    window.addEventListener('storage', updateCart);
-    return () => window.removeEventListener('storage', updateCart);
+    
+    loadData();
+    
+    const updateCartCount = async () => {
+      try {
+        const cartSummary = await container.cartUseCase.getCartSummary();
+        setCartCount(cartSummary.totalItems);
+      } catch (error) {
+        console.error('Error updating cart count:', error);
+        setCartCount(0);
+      }
+    };
+    
+    window.addEventListener('storage', updateCartCount);
+    return () => window.removeEventListener('storage', updateCartCount);
   }, []);
 
   // Navegación

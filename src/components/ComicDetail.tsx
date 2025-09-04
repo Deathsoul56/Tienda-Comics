@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import type { Comic } from "./CatalogoComics";
+import type { Comic } from "../domain/entities";
 
 interface Review {
   review_id: number;

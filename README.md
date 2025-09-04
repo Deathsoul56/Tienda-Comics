@@ -3,6 +3,102 @@
 
 Proyecto fullstack para gestionar y visualizar cómics usando React, TypeScript, Vite (frontend) y Express + SQL Server (backend).
 
+## Arquitectura del Sistema
+
+```mermaid
+graph TB
+    subgraph "Frontend (React + TypeScript + Vite)"
+        A[HomePage.tsx] --> B[CatalogoComics.tsx]
+        B --> C[ComicDetail.tsx]
+        B --> D[Carrito.tsx]
+        A --> E[VentasTienda.tsx]
+        F[App.tsx] --> A
+        F --> B
+        F --> C
+        F --> D
+        F --> E
+        G[useComicFilters.ts] --> B
+        H[App.css] --> F
+        I[index.css] --> F
+    end
+
+    subgraph "Backend (Express + TypeScript)"
+        J[index.ts] --> K[Express Server]
+        K --> L[API Routes]
+    end
+
+    subgraph "Base de Datos (SQL Server)"
+        M[(Comics)]
+        N[(Users)]
+        O[(Orders)]
+        P[(Compras)]
+        Q[(Review)]
+        R[(Suppliers)]
+        S[Triggers] --> M
+        S --> N
+        S --> O
+    end
+
+    subgraph "Assets"
+        T[public/images/] --> B
+        U[public/home/] --> A
+        V[public/logo.png] --> F
+    end
+
+    F -->|HTTP Requests| L
+    L -->|SQL Queries| M
+    L --> N
+    L --> O
+    L --> P
+    L --> Q
+    L --> R
+
+    style A fill:#e1f5fe
+    style B fill:#e1f5fe
+    style C fill:#e1f5fe
+    style D fill:#e1f5fe
+    style E fill:#e1f5fe
+    style F fill:#e8f5e8
+    style K fill:#fff3e0
+    style L fill:#fff3e0
+    style M fill:#fce4ec
+    style N fill:#fce4ec
+    style O fill:#fce4ec
+```
+
+## Flujo de Datos
+
+```mermaid
+sequenceDiagram
+    participant User as Usuario
+    participant FE as Frontend (React)
+    participant BE as Backend (Express)
+    participant DB as SQL Server
+
+    User->>FE: Accede a la tienda
+    FE->>BE: GET /api/comics
+    BE->>DB: SELECT * FROM Comics
+    DB-->>BE: Lista de cómics
+    BE-->>FE: JSON con cómics
+    FE-->>User: Muestra catálogo
+
+    User->>FE: Selecciona cómic
+    FE->>BE: GET /api/comics/:id
+    BE->>DB: SELECT * FROM Comics WHERE id = ?
+    DB-->>BE: Detalles del cómic
+    BE-->>FE: JSON con detalles
+    FE-->>User: Muestra detalles
+
+    User->>FE: Añade al carrito
+    FE->>FE: Actualiza estado local
+    User->>FE: Procede al checkout
+    FE->>BE: POST /api/orders
+    BE->>DB: INSERT INTO Orders
+    DB-->>BE: Confirmación
+    BE-->>FE: Orden creada
+    FE-->>User: Confirmación de compra
+```
+
 ## Características
 - Visualización de catálogo de cómics
 - Consulta de cómics desde base de datos SQL Server

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import type { ComicFilterOptions } from '../domain/entities';
+import { container } from '../infrastructure/DependencyContainer';
 
 export function useComicFilters() {
   const [authors, setAuthors] = useState<string[]>([]);
@@ -6,14 +8,18 @@ export function useComicFilters() {
   const [genres, setGenres] = useState<string[]>([]);
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    fetch(`${apiUrl}/comics/filters`)
-      .then(res => res.json())
-      .then(data => {
-        setAuthors(data.authors || []);
-        setPublishers(data.publishers || []);
-        setGenres(data.genres || []);
-      });
+    const loadFilters = async () => {
+      try {
+        const filters: ComicFilterOptions = await container.getComicFiltersUseCase.execute();
+        setAuthors(filters.authors || []);
+        setPublishers(filters.publishers || []);
+        setGenres(filters.genres || []);
+      } catch (error) {
+        console.error('Error loading comic filters:', error);
+      }
+    };
+    
+    loadFilters();
   }, []);
 
   return { authors, publishers, genres };
