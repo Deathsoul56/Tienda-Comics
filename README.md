@@ -1,225 +1,289 @@
+# 🦸‍♂️ Hexagonal Comic Store
 
-# Tienda de Cómics
+Una aplicación fullstack de tienda de cómics construida con **Arquitectura Hexagonal (Clean Architecture)**, React + TypeScript (frontend) y Express + SQL Server (backend).
 
-Proyecto fullstack para gestionar y visualizar cómics usando React, TypeScript, Vite (frontend) y Express + SQL Server (backend).
+## 🏗️ Arquitectura Hexagonal
 
-## Arquitectura del Sistema
+Este proyecto implementa una arquitectura hexagonal perfecta, garantizando separación de responsabilidades, testabilidad y mantenibilidad:
 
 ```mermaid
 graph TB
-    subgraph "Frontend (React + TypeScript + Vite)"
-        A[HomePage.tsx] --> B[CatalogoComics.tsx]
-        B --> C[ComicDetail.tsx]
-        B --> D[Carrito.tsx]
-        A --> E[VentasTienda.tsx]
-        F[App.tsx] --> A
-        F --> B
-        F --> C
-        F --> D
-        F --> E
-        G[useComicFilters.ts] --> B
-        H[App.css] --> F
-        I[index.css] --> F
+    subgraph "🎨 Presentation Layer"
+        UI[React Components]
+        Hooks[Custom Hooks]
+        Controllers[App Controllers]
     end
 
-    subgraph "Backend (Express + TypeScript)"
-        J[index.ts] --> K[Express Server]
-        K --> L[API Routes]
+    subgraph "📋 Application Layer"
+        UC[Use Cases]
+        Services[Domain Services]
+        AppControllers[Application Controllers]
     end
 
-    subgraph "Base de Datos (SQL Server)"
-        M[(Comics)]
-        N[(Users)]
-        O[(Orders)]
-        P[(Compras)]
-        Q[(Review)]
-        R[(Suppliers)]
-        S[Triggers] --> M
-        S --> N
-        S --> O
+    subgraph "🏛️ Domain Layer"
+        Entities[Domain Entities]
+        Ports[Repository Ports]
+        Rules[Business Rules]
     end
 
-    subgraph "Assets"
-        T[public/images/] --> B
-        U[public/home/] --> A
-        V[public/logo.png] --> F
+    subgraph "🔧 Infrastructure Layer"
+        API[API Adapters]
+        Storage[Storage Adapters]
+        DI[Dependency Container]
     end
 
-    F -->|HTTP Requests| L
-    L -->|SQL Queries| M
-    L --> N
-    L --> O
-    L --> P
-    L --> Q
-    L --> R
+    UI --> AppControllers
+    AppControllers --> UC
+    UC --> Ports
+    Ports <-.-> API
+    Ports <-.-> Storage
+    DI --> UC
+    DI --> API
+    DI --> Storage
 
-    style A fill:#e1f5fe
-    style B fill:#e1f5fe
-    style C fill:#e1f5fe
-    style D fill:#e1f5fe
-    style E fill:#e1f5fe
-    style F fill:#e8f5e8
-    style K fill:#fff3e0
-    style L fill:#fff3e0
-    style M fill:#fce4ec
-    style N fill:#fce4ec
-    style O fill:#fce4ec
+    style UI fill:#e1f5fe
+    style UC fill:#e8f5e8
+    style Entities fill:#fff3e0
+    style API fill:#fce4ec
 ```
 
-## Flujo de Datos
+### 📂 Estructura de Capas
 
-```mermaid
-sequenceDiagram
-    participant User as Usuario
-    participant FE as Frontend (React)
-    participant BE as Backend (Express)
-    participant DB as SQL Server
-
-    User->>FE: Accede a la tienda
-    FE->>BE: GET /api/comics
-    BE->>DB: SELECT * FROM Comics
-    DB-->>BE: Lista de cómics
-    BE-->>FE: JSON con cómics
-    FE-->>User: Muestra catálogo
-
-    User->>FE: Selecciona cómic
-    FE->>BE: GET /api/comics/:id
-    BE->>DB: SELECT * FROM Comics WHERE id = ?
-    DB-->>BE: Detalles del cómic
-    BE-->>FE: JSON con detalles
-    FE-->>User: Muestra detalles
-
-    User->>FE: Añade al carrito
-    FE->>FE: Actualiza estado local
-    User->>FE: Procede al checkout
-    FE->>BE: POST /api/orders
-    BE->>DB: INSERT INTO Orders
-    DB-->>BE: Confirmación
-    BE-->>FE: Orden creada
-    FE-->>User: Confirmación de compra
+```
+src/
+├── 🎨 presentation/
+│   ├── components/           # Componentes React
+│   │   ├── common/          # Componentes reutilizables
+│   │   │   ├── ErrorBoundary.tsx
+│   │   │   ├── Button.tsx
+│   │   │   └── LoadingSpinner.tsx
+│   │   ├── CatalogoComics.tsx
+│   │   ├── ComicDetail.tsx
+│   │   ├── HomePage.tsx
+│   │   ├── VentasTienda.tsx
+│   │   └── Carrito.tsx
+│   └── hooks/               # Hooks personalizados
+│       └── useComicFilters.ts
+├── 📋 application/
+│   ├── usecases/            # Casos de uso del negocio
+│   │   ├── GetComicsUseCase.ts
+│   │   ├── CartUseCase.ts
+│   │   ├── CheckoutUseCase.ts
+│   │   └── GetComicFiltersUseCase.ts
+│   ├── controllers/         # Controladores de aplicación
+│   │   └── AppController.ts
+│   └── services/           # Servicios transversales
+│       └── NavigationService.ts
+├── 🏛️ domain/
+│   ├── entities/           # Entidades de dominio
+│   │   ├── Comic.ts
+│   │   └── CartItem.ts
+│   └── repositories/       # Puertos (interfaces)
+│       ├── ComicRepository.ts
+│       ├── CartRepository.ts
+│       └── OrderRepository.ts
+└── 🔧 infrastructure/
+    ├── api/                # Adaptadores API
+    │   ├── ApiComicRepository.ts
+    │   └── ApiOrderRepository.ts
+    ├── storage/            # Adaptadores de almacenamiento
+    │   └── LocalStorageCartRepository.ts
+    └── DependencyContainer.ts # Inyección de dependencias
 ```
 
-## Características
-- Visualización de catálogo de cómics
-- Consulta de cómics desde base de datos SQL Server
-- Navegación con React Router
-- Estilos modernos con CSS
+## ✨ Características Principales
 
-## Instalación
+### 🛍️ **Funcionalidades de la Tienda**
+- **Catálogo Interactivo**: Navegación fluida por cómics con filtros avanzados
+- **Carrito Inteligente**: Persistente en localStorage con gestión de cantidades
+- **Checkout Completo**: Proceso de compra integrado con base de datos
+- **Dashboard de Ventas**: Análisis de ventas con gráficos (Recharts)
+- **Sistema de Reviews**: Reseñas y valoraciones de usuarios
 
-### Frontend (Vite + React)
+### 🏗️ **Arquitectura y Desarrollo**
+- **Arquitectura Hexagonal**: Separación perfecta de responsabilidades
+- **Clean Code**: TypeScript estricto con importaciones de tipos
+- **Error Boundaries**: Manejo robusto de errores
+- **Componentes Reutilizables**: Sistema de componentes modular
+- **Estado Centralizado**: Gestión de estado con hooks personalizados
+- **Navegación Centralizada**: Servicio de navegación singleton
+
+### 🎨 **UI/UX Moderna**
+- **Diseño Responsive**: Adaptable a todos los dispositivos
+- **Tema Oscuro**: Interfaz moderna con colores consistentes
+- **Animaciones Suaves**: Transiciones y hover effects
+- **Loading States**: Indicadores de carga apropiados
+- **Feedback Visual**: Estados de éxito, error y carga
+
+## 🚀 Instalación y Configuración
+
+### Prerrequisitos
+- Node.js 18+
+- SQL Server
+- npm o yarn
+
+### 🎯 Frontend (React + Vite)
 ```bash
+# Instalar dependencias
 npm install
+
+# Desarrollo
+npm run dev          # Puerto 3000
+
+# Construcción
+npm run build        # Builds TypeScript + Vite
+npm run lint         # ESLint
+npm run preview      # Preview build
 ```
 
-### Backend (Express)
+### ⚡ Backend (Express + TypeScript)
 ```bash
 cd server
+
+# Instalar dependencias
 npm install
+
+# Desarrollo
+npx ts-node src/main.ts     # Desarrollo directo
+# o
+npx tsc && node dist/main.js # Compilar y ejecutar
 ```
 
-## Ejecución
-
-### Frontend
+### 🗄️ Base de Datos
 ```bash
-npm run dev
+# Configurar variables de entorno en server/.env
+DB_SERVER=your_sql_server
+DB_DATABASE=ComicsStore
+DB_USER=your_username
+DB_PASSWORD=your_password
+PORT=4000
+
+# Ejecutar scripts SQL desde server/sql/
 ```
 
-### Backend
-```bash
-cd .\server\
-npx tsc
-node dist/index.js
-```
-o si tienes TypeScript:
-```bash
-npx ts-node index.ts
-```
+## 🌐 API Endpoints
 
-## Estructura del proyecto
-- `src/` : Código fuente del frontend
-  - `components/` : Componentes reutilizables (ej. CatalogoComics)
-  - `App.tsx` : Componente principal
-- `server/` : Backend Express y scripts SQL
-  - `index.ts` : Servidor Express principal
-  - `sql/` : Scripts y consultas SQL
+### 📚 Comics
+- `GET /comics` - Obtener cómics con filtros
+- `GET /comics/filters` - Opciones de filtros disponibles
+- `GET /comics/:id` - Obtener cómic específico
 
-## Uso
-1. Asegúrate de tener una base de datos SQL Server con la tabla `Comics`.
-2. Configura las variables de entorno en `server/.env`:
-   - `DB_SERVER`, `DB_DATABASE`, `DB_USER`, `DB_PASSWORD`, `PORT`
-3. Inicia el backend y frontend como se indica arriba.
-4. Accede a la app en [http://localhost:3000](http://localhost:3000).
+### 📝 Reviews
+- `GET /reviews/:comic_id` - Reviews de un cómic específico
 
-## Personalización
-Agrega tus cómics en la base de datos y personaliza los estilos en `App.css`.
+### 🛒 Orders
+- `POST /orders` - Crear nueva orden
 
-# React + TypeScript + Vite
+### 📊 Analytics
+- `GET /ventas` - Datos de ventas
+- `GET /ventas-mensuales` - Análisis mensual
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🔧 Configuración de Desarrollo
 
-Currently, two official plugins are available:
+### Variables de Entorno
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Frontend (.env)**
+```env
+VITE_API_BASE_URL=http://localhost:4000
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Backend (server/.env)**
+```env
+DB_SERVER=localhost
+DB_DATABASE=ComicsStore
+DB_USER=your_user
+DB_PASSWORD=your_password
+PORT=4000
 ```
+
+### Scripts Disponibles
+
+**Frontend:**
+- `npm run dev` - Servidor de desarrollo
+- `npm run build` - Build para producción
+- `npm run lint` - Linting con ESLint
+- `npm run preview` - Preview del build
+
+**Backend:**
+- `npx tsc` - Compilar TypeScript
+- `npx ts-node src/main.ts` - Desarrollo directo
+- `node dist/main.js` - Ejecutar build compilado
+
+## 🎯 Principios de Arquitectura Implementados
+
+### ✅ **SOLID Principles**
+- **S**: Cada clase/componente tiene una responsabilidad única
+- **O**: Abierto para extensión, cerrado para modificación
+- **L**: Las implementaciones son intercambiables
+- **I**: Interfaces segregadas y específicas
+- **D**: Dependencia de abstracciones, no concreciones
+
+### ✅ **Hexagonal Architecture**
+- **Ports & Adapters**: Interfaces en domain, implementaciones en infrastructure
+- **Dependency Inversion**: Use cases dependen de abstracciones
+- **Inside-Out**: El dominio no conoce la infraestructura
+- **Testability**: Fácil testing con mocks
+
+### ✅ **Clean Code**
+- **TypeScript Estricto**: Tipos explícitos y validación
+- **Error Handling**: Boundaries y manejo consistente de errores
+- **Separation of Concerns**: Cada capa con responsabilidad específica
+- **Dependency Injection**: Container centralizado
+
+## 📋 Tareas de Desarrollo Comunes
+
+### Agregar Nuevo Use Case
+1. Crear interface en `domain/repositories/`
+2. Implementar use case en `application/usecases/`
+3. Crear adaptador en `infrastructure/`
+4. Registrar en `DependencyContainer`
+
+### Agregar Nuevo Componente
+1. Crear componente en `components/`
+2. Usar hooks existentes para estado
+3. Implementar error boundaries
+4. Añadir a `components/common/` si es reutilizable
+
+### Modificar Entidades
+1. Actualizar interfaces en `domain/entities/`
+2. Actualizar repositorios relacionados
+3. Ajustar use cases afectados
+4. Actualizar adaptadores
+
+## 🧪 Testing
+
+El proyecto está preparado para testing con:
+- **Unit Tests**: Para use cases y entidades
+- **Integration Tests**: Para adaptadores
+- **Component Tests**: Para componentes React
+- **E2E Tests**: Para flujos completos
+
+## 🔄 Estados de la Aplicación
+
+- **Loading**: Spinners y estados de carga
+- **Error**: Error boundaries y mensajes de error
+- **Empty**: Estados vacíos con mensajes informativos
+- **Success**: Feedback de operaciones exitosas
+
+## 🏆 Beneficios de esta Arquitectura
+
+- ✅ **Mantenibilidad**: Código organizado y fácil de modificar
+- ✅ **Testabilidad**: Fácil testing con dependency injection
+- ✅ **Escalabilidad**: Fácil agregar nuevas funcionalidades
+- ✅ **Flexibilidad**: Intercambio fácil de tecnologías
+- ✅ **Separación de Responsabilidades**: Cada capa con su propósito
+- ✅ **Reutilización**: Componentes y lógica reutilizable
+
+---
+
+## 📄 Licencia
+
+Este proyecto es un ejemplo educativo de arquitectura hexagonal en React + TypeScript.
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, mantén los principios de arquitectura hexagonal al agregar nuevas funcionalidades.
+
+---
+
+**Desarrollado con ❤️ usando Arquitectura Hexagonal y las mejores prácticas de desarrollo**
