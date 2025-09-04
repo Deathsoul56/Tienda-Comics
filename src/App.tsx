@@ -57,11 +57,11 @@ function App() {
       )}
       {vista !== 'home' && (
         <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
-          <Button onClick={() => navigateTo('home')}>Inicio</Button>
-          <Button onClick={() => navigateTo('catalogo')}>Catálogo</Button>
-          <Button onClick={() => navigateTo('ventas')}>Ventas</Button>
+          <Button onClick={() => navigateTo('home')}>🏠 Inicio</Button>
+          <Button onClick={() => navigateTo('catalogo')}>📚 Catálogo</Button>
+          <Button onClick={() => navigateTo('ventas')}>📈 Ventas</Button>
           <Button onClick={() => navigateTo('carrito')}>
-            Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})
+            🛒 Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})
           </Button>
         </div>
       )}

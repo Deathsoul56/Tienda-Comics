@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, BarChart, Bar, LabelList } from "recharts";
 import type { Comic } from "../domain/entities";
 
 interface Venta {
@@ -29,7 +29,7 @@ const VentasTienda: React.FC = () => {
   const [filtroMeses, setFiltroMeses] = useState<string[]>([]);
   
   // Estado para mostrar/ocultar el panel de filtros
-  const [mostrarFiltros, setMostrarFiltros] = useState(true);
+  const [mostrarFiltros, setMostrarFiltros] = useState(false);
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -200,7 +200,7 @@ const VentasTienda: React.FC = () => {
             borderBottom: '1px solid rgba(100, 108, 255, 0.3)',
             paddingBottom: '0.4rem'
           }}>
-            <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>Filtros</span>
+            <span style={{ fontSize: '1.1em', fontWeight: 'bold' }}>🎛️ Filtros</span>
             <button
               onClick={() => setMostrarFiltros(false)}
               style={{
@@ -227,7 +227,7 @@ const VentasTienda: React.FC = () => {
           <div style={{ marginBottom: '0.8em' }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4, gap: 6 }}>
               <span style={{ fontSize: '0.9em' }}>Año:</span>
-              <button type="button" onClick={() => { setFiltroAnios([]); setFiltroMeses([]); }} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '1px 8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.75em' }}>Limpiar</button>
+              <button type="button" onClick={() => { setFiltroAnios([]); setFiltroMeses([]); }} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '1px 8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.75em' }}>🧹 Limpiar</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {aniosDisponibles.map(anio => (
@@ -246,7 +246,7 @@ const VentasTienda: React.FC = () => {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4, gap: 6 }}>
               <span style={{ fontSize: '0.9em' }}>Mes:</span>
-              <button type="button" onClick={() => setFiltroMeses([])} disabled={filtroAnios.length === 0} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '1px 8px', fontWeight: 'bold', cursor: filtroAnios.length === 0 ? 'not-allowed' : 'pointer', fontSize: '0.75em', opacity: filtroAnios.length === 0 ? 0.5 : 1 }}>Limpiar</button>
+              <button type="button" onClick={() => setFiltroMeses([])} disabled={filtroAnios.length === 0} style={{ marginLeft: 'auto', background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '1px 8px', fontWeight: 'bold', cursor: filtroAnios.length === 0 ? 'not-allowed' : 'pointer', fontSize: '0.75em', opacity: filtroAnios.length === 0 ? 0.5 : 1 }}>🧹 Limpiar</button>
             </div>
             {mesesDisponibles.length === 0 && <div style={{ color: '#aaa', fontSize: '0.95em' }}>Selecciona al menos un año</div>}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -306,7 +306,7 @@ const VentasTienda: React.FC = () => {
               transform: 'rotate(-90deg)',
               userSelect: 'none'
             }}>
-              Filtros
+              🎛️ Filtros
             </div>
           </div>
         )}
@@ -350,7 +350,9 @@ const VentasTienda: React.FC = () => {
               <XAxis type="number" />
               <YAxis dataKey="nombre" type="category" width={220} />
               <Tooltip />
-              <Bar dataKey="cantidad" fill="#ff69b4" name="Cantidad Vendida" />
+              <Bar dataKey="cantidad" fill="#ff69b4" name="Cantidad Vendida">
+                <LabelList dataKey="cantidad" position="right" style={{ fill: '#fff', fontSize: '12px', fontWeight: 'bold' }} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -362,7 +364,9 @@ const VentasTienda: React.FC = () => {
               <XAxis type="number" />
               <YAxis dataKey="user_name" type="category" width={220} />
               <Tooltip />
-              <Bar dataKey="cantidad" fill="#00e676" name="Compras" />
+              <Bar dataKey="cantidad" fill="#00e676" name="Compras">
+                <LabelList dataKey="cantidad" position="right" style={{ fill: '#fff', fontSize: '12px', fontWeight: 'bold' }} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>

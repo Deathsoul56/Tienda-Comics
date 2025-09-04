@@ -316,7 +316,7 @@ const Carrito: React.FC<CarritoProps> = ({ items, onRemove, onCheckout, onChange
                 fontWeight: 'bold'
               }}
             >
-              Finalizar Compra ({items.length} {items.length === 1 ? 'item' : 'items'})
+              💳 Finalizar Compra ({items.length} {items.length === 1 ? 'item' : 'items'})
             </Button>
           </div>
         </div>

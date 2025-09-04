@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useComicFilters } from '../hooks/useComicFilters';
+import { useCartNotification } from '../hooks/useCartNotification';
 import type { Comic } from '../domain/entities';
-import { container } from '../infrastructure/DependencyContainer';
 
 interface CatalogoComicsProps {
   comics: Comic[];
@@ -13,6 +13,7 @@ interface CatalogoComicsProps {
 const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onComicClick }) => {
   const [order, setOrder] = useState<'position' | 'title_asc' | 'title_desc' | 'price_asc' | 'price_desc' | ''>('');
   const { authors, publishers, genres } = useComicFilters();
+  const { notification, buttonStates, addToCart } = useCartNotification();
   const initialFilters = {
     author: '',
     publisher: '',
@@ -49,22 +50,90 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
     if (onSearch) onSearch(initialFilters);
   };
 
-  const handleAddToCart = async (comic: Comic) => {
-    try {
-      await container.cartUseCase.addToCart(comic);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-    }
-  };
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      gap: '2rem',
-      maxWidth: '1400px',
-      margin: '0 auto',
-      padding: '1rem'
-    }}>
+    <>
+      {/* Notificación flotante */}
+      {notification.show && notification.comic && (
+        <div style={{
+          position: 'fixed',
+          top: '2rem',
+          right: '2rem',
+          backgroundColor: '#1a1a1a',
+          border: '2px solid #00e676',
+          borderRadius: '16px',
+          padding: '1.5rem',
+          zIndex: 1000,
+          boxShadow: '0 8px 32px rgba(0, 230, 118, 0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          maxWidth: '400px',
+          animation: notification.show ? 'slideInRight 0.5s ease-out' : 'slideOutRight 0.3s ease-in',
+          transform: notification.show ? 'translateX(0)' : 'translateX(100%)'
+        }}>
+          <div style={{
+            width: '60px',
+            height: '80px',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            flexShrink: 0
+          }}>
+            <img
+              src={
+                notification.comic.image
+                  ? notification.comic.image.startsWith('http')
+                    ? notification.comic.image
+                    : notification.comic.image.startsWith('/')
+                      ? notification.comic.image
+                      : '/' + notification.comic.image
+                  : ''
+              }
+              alt={notification.comic.title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{
+              color: '#00e676',
+              fontWeight: 'bold',
+              fontSize: '1rem',
+              marginBottom: '0.25rem'
+            }}>
+              ✅ ¡Agregado al carrito!
+            </div>
+            <div style={{
+              color: '#fff',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}>
+              {notification.comic.title}
+            </div>
+            <div style={{
+              color: '#646cff',
+              fontSize: '0.85rem',
+              fontWeight: 'bold'
+            }}>
+              ${notification.comic.price?.toFixed(2)}
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <div style={{ 
+        display: 'flex', 
+        gap: '2rem',
+        maxWidth: '1800px',
+        margin: '0 auto',
+        padding: '1rem'
+      }}>
       {/* Sidebar de filtros */}
       <aside style={{
         width: '280px',
@@ -260,7 +329,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              Buscar
+              🔍 Buscar
             </button>
             <button 
               type="button" 
@@ -285,7 +354,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
                 e.currentTarget.style.color = '#646cff';
               }}
             >
-              Limpiar filtros
+              🧹 Limpiar filtros
             </button>
           </div>
         </form>
@@ -350,7 +419,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
         {/* Grid de cómics */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
           gap: '4rem 1.1rem',
           alignItems: 'start'
         }}>
@@ -469,32 +538,49 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleAddToCart(comic);
+                      addToCart(comic);
                     }}
+                    disabled={buttonStates[comic.comic_id] === 'loading'}
                     style={{
                       width: '100%',
                       padding: '0.75rem',
                       borderRadius: '8px',
                       border: 'none',
-                      background: 'linear-gradient(135deg, #646cff 0%, #7c3aed 100%)',
+                      background: buttonStates[comic.comic_id] === 'success' 
+                        ? 'linear-gradient(135deg, #00e676 0%, #00c853 100%)'
+                        : buttonStates[comic.comic_id] === 'loading'
+                        ? 'linear-gradient(135deg, #666 0%, #888 100%)'
+                        : 'linear-gradient(135deg, #646cff 0%, #7c3aed 100%)',
                       color: '#fff',
                       fontWeight: 'bold',
                       fontSize: '0.95rem',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
+                      cursor: buttonStates[comic.comic_id] === 'loading' ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.3s ease',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.5px',
+                      transform: buttonStates[comic.comic_id] === 'success' ? 'scale(1.05)' : 'scale(1)',
+                      boxShadow: buttonStates[comic.comic_id] === 'success' 
+                        ? '0 4px 20px rgba(0, 230, 118, 0.4)' 
+                        : 'none'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.02)';
-                      e.currentTarget.style.boxShadow = '0 4px 20px rgba(100, 108, 255, 0.4)';
+                      if (buttonStates[comic.comic_id] !== 'loading') {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 20px rgba(100, 108, 255, 0.4)';
+                      }
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.boxShadow = 'none';
+                      if (buttonStates[comic.comic_id] !== 'loading') {
+                        e.currentTarget.style.transform = buttonStates[comic.comic_id] === 'success' ? 'scale(1.05)' : 'scale(1)';
+                        e.currentTarget.style.boxShadow = buttonStates[comic.comic_id] === 'success' 
+                          ? '0 4px 20px rgba(0, 230, 118, 0.4)' 
+                          : 'none';
+                      }
                     }}
                   >
-                    Agregar al carrito
+                    {buttonStates[comic.comic_id] === 'loading' && '⏳ Agregando...'}
+                    {buttonStates[comic.comic_id] === 'success' && '✅ ¡Agregado!'}
+                    {(!buttonStates[comic.comic_id] || buttonStates[comic.comic_id] === 'idle') && 'Agregar al carrito'}
                   </button>
                 </div>
               </div>
@@ -502,7 +588,8 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
           ))}
         </div>
       </main>
-    </div>
+      </div>
+    </>
   );
 };
 
