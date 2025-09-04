@@ -59,7 +59,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
 
   return (
     <div className="catalogo-panoramico">
-      <div style={{ width: '100vw', maxWidth: '100vw', margin: 0, padding: 0, boxSizing: 'border-box', display: 'block' }}>
+      <div style={{ width: '100vw', maxWidth: '100vw', margin: 0, padding: 0, boxSizing: 'border-box', display: 'block', overflowX: 'hidden' }}>
         <aside className="catalogo-sidebar-flotante">
           <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <label style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Autor</label>

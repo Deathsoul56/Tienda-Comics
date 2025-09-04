@@ -53,6 +53,10 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background: #535bf2;
 }
+body {
+  overflow-x: hidden;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
