@@ -58,144 +58,450 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
   };
 
   return (
-    <div className="catalogo-panoramico">
-      <div style={{ width: '100vw', maxWidth: '100vw', margin: 0, padding: 0, boxSizing: 'border-box', display: 'block', overflowX: 'hidden' }}>
-        <aside className="catalogo-sidebar-flotante">
-          <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <label style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Autor</label>
-            <select name="author" value={filters.author} onChange={handleInputChange}>
-              <option value="">Todos</option>
+    <div style={{ 
+      display: 'flex', 
+      gap: '2rem',
+      maxWidth: '1400px',
+      margin: '0 auto',
+      padding: '1rem'
+    }}>
+      {/* Sidebar de filtros */}
+      <aside style={{
+        width: '280px',
+        flexShrink: 0,
+        backgroundColor: '#1a1a1a',
+        borderRadius: '16px',
+        padding: '2rem 1.5rem',
+        height: 'fit-content',
+        position: 'sticky',
+        top: '2rem',
+        border: '1px solid #333',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+      }}>
+        <h3 style={{ 
+          color: '#fff', 
+          marginBottom: '1.5rem', 
+          fontSize: '1.3rem', 
+          fontWeight: 'bold',
+          textAlign: 'center',
+          borderBottom: '2px solid #646cff',
+          paddingBottom: '0.5rem'
+        }}>
+          Filtros
+        </h3>
+        
+        <form onSubmit={handleSearch} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {/* Autor */}
+          <div>
+            <label style={{ 
+              color: '#fff', 
+              fontWeight: 'bold', 
+              marginBottom: '0.5rem', 
+              display: 'block',
+              fontSize: '0.95rem'
+            }}>
+              Autor
+            </label>
+            <select 
+              name="author" 
+              value={filters.author} 
+              onChange={handleInputChange}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '2px solid #333',
+                background: '#222',
+                color: '#fff',
+                fontSize: '0.95rem',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#646cff'}
+              onBlur={(e) => e.target.style.borderColor = '#333'}
+            >
+              <option value="">Todos los autores</option>
               {authors.map((author) => (
                 <option key={author} value={author}>{author}</option>
               ))}
             </select>
-            <label style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Publicador</label>
-            <select name="publisher" value={filters.publisher} onChange={handleInputChange}>
-              <option value="">Todos</option>
+          </div>
+
+          {/* Publisher */}
+          <div>
+            <label style={{ 
+              color: '#fff', 
+              fontWeight: 'bold', 
+              marginBottom: '0.5rem', 
+              display: 'block',
+              fontSize: '0.95rem'
+            }}>
+              Editorial
+            </label>
+            <select 
+              name="publisher" 
+              value={filters.publisher} 
+              onChange={handleInputChange}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '2px solid #333',
+                background: '#222',
+                color: '#fff',
+                fontSize: '0.95rem',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#646cff'}
+              onBlur={(e) => e.target.style.borderColor = '#333'}
+            >
+              <option value="">Todas las editoriales</option>
               {publishers.map((publisher) => (
                 <option key={publisher} value={publisher}>{publisher}</option>
               ))}
             </select>
-            <label style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Género</label>
-            <select name="genre" value={filters.genre} onChange={handleInputChange}>
-              <option value="">Todos</option>
+          </div>
+
+          {/* Género */}
+          <div>
+            <label style={{ 
+              color: '#fff', 
+              fontWeight: 'bold', 
+              marginBottom: '0.5rem', 
+              display: 'block',
+              fontSize: '0.95rem'
+            }}>
+              Género
+            </label>
+            <select 
+              name="genre" 
+              value={filters.genre} 
+              onChange={handleInputChange}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '2px solid #333',
+                background: '#222',
+                color: '#fff',
+                fontSize: '0.95rem',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#646cff'}
+              onBlur={(e) => e.target.style.borderColor = '#333'}
+            >
+              <option value="">Todos los géneros</option>
               {genres.map((genre) => (
                 <option key={genre} value={genre}>{genre}</option>
               ))}
             </select>
-            <label style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Precio</label>
-            <select name="priceRange" value={filters.priceRange} onChange={handleInputChange}>
+          </div>
+
+          {/* Precio */}
+          <div>
+            <label style={{ 
+              color: '#fff', 
+              fontWeight: 'bold', 
+              marginBottom: '0.5rem', 
+              display: 'block',
+              fontSize: '0.95rem'
+            }}>
+              Rango de precio
+            </label>
+            <select 
+              name="priceRange" 
+              value={filters.priceRange} 
+              onChange={handleInputChange}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                borderRadius: '8px',
+                border: '2px solid #333',
+                background: '#222',
+                color: '#fff',
+                fontSize: '0.95rem',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#646cff'}
+              onBlur={(e) => e.target.style.borderColor = '#333'}
+            >
               {priceRanges.map((range) => (
                 <option key={range.value} value={range.value}>{range.label}</option>
               ))}
             </select>
-            <button type="submit" className="btn-modern">Buscar</button>
-            <button type="button" className="btn-modern" style={{ background: '#222', color: '#fff', border: '1px solid #646cff' }} onClick={handleClearFilters}>Borrar filtros</button>
-          </form>
-        </aside>
-        {/* Fila de controles: contador a la izquierda, ordenar a la derecha */}
+          </div>
+
+          {/* Botones */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+            <button 
+              type="submit"
+              style={{
+                padding: '0.75rem 1.5rem',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #646cff 0%, #7c3aed 100%)',
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(100, 108, 255, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              Buscar
+            </button>
+            <button 
+              type="button" 
+              onClick={handleClearFilters}
+              style={{
+                padding: '0.75rem 1.5rem',
+                borderRadius: '8px',
+                border: '2px solid #646cff',
+                background: 'transparent',
+                color: '#646cff',
+                fontWeight: 'bold',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#646cff';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#646cff';
+              }}
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        </form>
+      </aside>
+
+      {/* Contenido principal */}
+      <main style={{ flex: 1, minWidth: 0 }}>
+        {/* Barra superior */}
         <div style={{
-          marginLeft: '90px',
-          marginTop: '2rem',
-          marginBottom: '1.5rem',
-          paddingLeft: 0,
-          paddingRight: '23vw',
           display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
           justifyContent: 'space-between',
-          width: 'auto',
-          maxWidth: 'calc(100vw - 90px - 2vw)'
+          alignItems: 'center',
+          marginBottom: '2rem',
+          backgroundColor: '#1a1a1a',
+          padding: '1.5rem 2rem',
+          borderRadius: '12px',
+          border: '1px solid #333'
         }}>
-          <div style={{ color: '#bbb', fontSize: '1.1em', fontWeight: 'bold' }}>{`Muestra ${comics.length} de ${comics.length} cómics`}</div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem' }}>
-            <label htmlFor="orderSelect" style={{ color: '#fff', fontWeight: 'bold', marginBottom: 0 }}>Ordenar por</label>
-            <select id="orderSelect" value={order} onChange={handleOrderChange} style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #646cff', minWidth: '180px', background: '#222', color: '#fff', fontWeight: 'bold' }}>
+          <div style={{ 
+            color: '#bbb', 
+            fontSize: '1.1rem', 
+            fontWeight: 'bold' 
+          }}>
+            {comics.length} cómics encontrados
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <label style={{ 
+              color: '#fff', 
+              fontWeight: 'bold', 
+              fontSize: '0.95rem' 
+            }}>
+              Ordenar por:
+            </label>
+            <select 
+              value={order} 
+              onChange={handleOrderChange}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '6px',
+                border: '2px solid #333',
+                background: '#222',
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: '0.95rem',
+                minWidth: '200px',
+                outline: 'none',
+                transition: 'border-color 0.2s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#646cff'}
+              onBlur={(e) => e.target.style.borderColor = '#333'}
+            >
               <option value="position">Posición</option>
               <option value="title_asc">Nombre: A a Z</option>
               <option value="title_desc">Nombre: Z a A</option>
-              <option value="price_asc">Precio: de menor a mayor</option>
-              <option value="price_desc">Precio: de mayor a menor</option>
+              <option value="price_asc">Precio: menor a mayor</option>
+              <option value="price_desc">Precio: mayor a menor</option>
             </select>
           </div>
         </div>
-        {/* Grid de productos panorámico */}
-        <section className="catalogo-grid-panoramico">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '1.5rem',
-            width: '100%',
-            alignItems: 'stretch',
-            justifyItems: 'center',
-            paddingBottom: '2rem',
-          }}>
-            {comics.map((comic) => {
-              // Esta validación se puede remover o simplificar ya que el use case maneja la lógica
-              const isInCart = false; // Simplificado por ahora
-              return (
-                <div
-                  key={comic.comic_id}
+
+        {/* Grid de cómics */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gap: '4rem 1.1rem',
+          alignItems: 'start'
+        }}>
+          {comics.map((comic) => (
+            <div
+              key={comic.comic_id}
+              style={{
+                backgroundColor: '#1a1a1a',
+                borderRadius: '16px',
+                padding: '1.5rem',
+                border: '1px solid #333',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 12px 40px rgba(100, 108, 255, 0.3)';
+                e.currentTarget.style.borderColor = '#646cff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = '#333';
+              }}
+              onClick={() => onComicClick && onComicClick(comic)}
+            >
+              {/* Imagen del cómic */}
+              <div style={{ 
+                width: '100%', 
+                aspectRatio: '3/4', 
+                marginBottom: '1rem',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                backgroundColor: '#2a2a2a'
+              }}>
+                <img
+                  src={
+                    comic.image
+                      ? comic.image.startsWith('http')
+                        ? comic.image
+                        : comic.image.startsWith('/')
+                          ? comic.image
+                          : '/' + comic.image
+                      : ''
+                  }
+                  alt={comic.title || 'Comic'}
                   style={{
-                    background: "#1a1a1a",
-                    borderRadius: "12px",
-                    boxShadow: "0 2px 8px #0003",
-                    padding: "1rem",
-                    color: "#fff",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
+                    width: '100%',
                     height: '100%',
-                    marginBottom: '2rem',
-                    transition: 'box-shadow 0.2s, border 0.2s',
-                    border: '2px solid transparent',
-                    cursor: 'pointer',
+                    objectFit: 'cover',
+                    transition: 'transform 0.3s ease'
                   }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = '0 4px 16px #646cff99';
-                    (e.currentTarget as HTMLDivElement).style.border = '2px solid #646cff';
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
                   }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px #0003';
-                    (e.currentTarget as HTMLDivElement).style.border = '2px solid transparent';
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
                   }}
-                  onClick={() => onComicClick && onComicClick(comic)}
-                >
-                  <div>
-                    <img
-                      src={
-                        comic.image
-                          ? comic.image.startsWith('http')
-                            ? comic.image
-                            : comic.image.startsWith('/')
-                              ? comic.image
-                              : '/' + comic.image
-                          : ''
-                      }
-                      alt={comic.title || 'Comic'}
-                      style={{ width: "100%", borderRadius: "8px", marginBottom: "1rem" }}
-                    />
-                    <h2 style={{ fontSize: "1.3em", margin: "0 0 0.5em 0" }}>{comic.title}</h2>
-                    <p style={{ margin: "0 0 0.5em 0", fontWeight: "bold" }}>Autor: {comic.author}</p>
-                    <p style={{ margin: "0 0 0.5em 0" }}>{comic.description}</p>
-                    <p style={{ fontWeight: "bold", color: "#646cff" }}>${comic.price?.toFixed(2)}</p>
+                />
+              </div>
+
+              {/* Información del cómic */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{
+                  color: '#fff',
+                  fontSize: '1.1rem',
+                  fontWeight: 'bold',
+                  margin: '0 0 0.5rem 0',
+                  lineHeight: '1.3',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden'
+                }}>
+                  {comic.title}
+                </h3>
+
+                <p style={{
+                  color: '#bbb',
+                  fontSize: '0.9rem',
+                  margin: '0 0 0.5rem 0',
+                  fontWeight: '500'
+                }}>
+                  {comic.author}
+                </p>
+
+                <p style={{
+                  color: '#888',
+                  fontSize: '0.85rem',
+                  margin: '0 0 1rem 0',
+                  lineHeight: '1.4',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  flex: 1
+                }}>
+                  {comic.description}
+                </p>
+
+                {/* Precio y botón */}
+                <div style={{ marginTop: 'auto' }}>
+                  <div style={{
+                    color: '#646cff',
+                    fontSize: '1.3rem',
+                    fontWeight: 'bold',
+                    marginBottom: '1rem',
+                    textAlign: 'center'
+                  }}>
+                    ${comic.price?.toFixed(2)}
                   </div>
+
                   <button
-                    className="btn-modern"
-                    style={{ marginTop: '1em', opacity: isInCart ? 1 : 1, cursor: 'pointer', alignSelf: 'stretch' }}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       handleAddToCart(comic);
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem',
+                      borderRadius: '8px',
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #646cff 0%, #7c3aed 100%)',
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 4px 20px rgba(100, 108, 255, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = 'none';
                     }}
                   >
                     Agregar al carrito
                   </button>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-      </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 };
