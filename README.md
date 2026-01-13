@@ -144,9 +144,9 @@ cd server
 npm install
 
 # Desarrollo
-npx ts-node src/main.ts     # Desarrollo directo
-# o
-npx tsc && node dist/main.js # Compilar y ejecutar
+cd server
+npx tsc # Compilar TypeScript
+node dist/index.js # Ejecutar servidor
 ```
 
 ### 🗄️ Base de Datos
@@ -280,10 +280,12 @@ El proyecto está preparado para testing con:
 
 Este proyecto es un ejemplo educativo de arquitectura hexagonal en React + TypeScript.
 
+Licencia: Este proyecto se distribuye bajo la Licencia Pública General GNU versión 3 o posterior (GPL-3.0-or-later). Consulta el archivo [LICENSE](LICENSE) para el texto completo.
+
 ## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas. Por favor, mantén los principios de arquitectura hexagonal al agregar nuevas funcionalidades.
 
 ---
 
-**Desarrollado con ❤️ usando Arquitectura Hexagonal y las mejores prácticas de desarrollo**
+**Desarrollado con altos niveles de autismo**

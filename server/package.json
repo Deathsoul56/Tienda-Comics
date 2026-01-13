@@ -1,6 +1,7 @@
 {
   "name": "comics-store-server",
   "version": "1.0.0",
+  "license": "GPL-3.0-or-later",
   "description": "Hexagonal architecture comics store server",
   "main": "dist/main.js",
   "type": "commonjs",
