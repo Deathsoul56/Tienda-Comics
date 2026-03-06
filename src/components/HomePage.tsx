@@ -179,49 +179,6 @@ const MasVendidos: React.FC<{ comics: Comic[]; onSelect: (comic: Comic) => void 
   );
 };
 
-// --- Interface para reviews ---
-interface Review {
-  review_id: number;
-  comic_id: number;
-  user_id: string;
-  user_name?: string;
-  rating: number;
-  review_text: string;
-  created_at: string;
-}
-
-// --- Componente para mostrar reviews de un cómic ---
-const ComicReviews: React.FC<{ comicId: number }> = ({ comicId }) => {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/reviews/${comicId}`)
-      .then(res => res.json())
-      .then(data => setReviews(Array.isArray(data) ? data : data.reviews || []))
-      .finally(() => setLoading(false));
-  }, [comicId]);
-  if (loading) return <div style={{ color: '#bbb', margin: '1.5em 0' }}>Cargando reviews...</div>;
-  return (
-    <div style={{ marginTop: '2.5em' }}>
-      <h2 style={{ color: '#fff', marginBottom: '1em', textAlign: 'center' }}>Reseñas de usuarios</h2>
-      {reviews.length === 0 ? (
-        <p style={{ color: '#bbb', textAlign: 'center' }}>No hay reseñas para este cómic.</p>
-      ) : (
-        <div style={{ maxHeight: 400, overflowY: 'auto', display: 'grid', gap: '1.2em', margin: '0 auto', padding: '0 1em' }}>
-          {reviews.map(review => (
-            <div key={review.review_id} style={{ background: '#333', borderRadius: 16, padding: '1.2em', boxShadow: '0 4px 16px #0005', minHeight: 100, border: '1px solid #444' }}>
-              <p style={{ fontWeight: 'bold', color: '#646cff', marginBottom: 4 }}>
-                Usuario: {review.user_name || review.user_id} <span style={{ color: '#ffd700' }}>★ {review.rating}</span>
-              </p>
-              <p style={{ margin: '0.5em 0', color: '#fff' }}>{review.review_text}</p>
-              <p style={{ fontSize: '0.9em', color: '#888', marginTop: 8 }}>{new Date(review.created_at).toLocaleDateString()}</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 // --- HomePage principal ---
 interface HomePageProps {
