@@ -61,6 +61,10 @@ src/
 │   │   ├── ComicDetail.tsx
 │   │   ├── HomePage.tsx
 │   │   ├── VentasTienda.tsx
+│   │   ├── UserProfile.tsx
+│   │   ├── auth/
+│   │   │   ├── Login.tsx
+│   │   │   └── Register.tsx
 │   │   └── Carrito.tsx
 │   └── hooks/               # Hooks personalizados
 │       └── useComicFilters.ts
@@ -69,7 +73,8 @@ src/
 │   │   ├── GetComicsUseCase.ts
 │   │   ├── CartUseCase.ts
 │   │   ├── CheckoutUseCase.ts
-│   │   └── GetComicFiltersUseCase.ts
+│   │   ├── GetComicFiltersUseCase.ts
+│   │   └── AuthUseCase.ts
 │   ├── controllers/         # Controladores de aplicación
 │   │   └── AppController.ts
 │   └── services/           # Servicios transversales
@@ -94,11 +99,14 @@ src/
 ## ✨ Características Principales
 
 ### 🛍️ **Funcionalidades de la Tienda**
-- **Catálogo Interactivo**: Navegación fluida por cómics con filtros avanzados
-- **Carrito Inteligente**: Persistente en localStorage con gestión de cantidades
-- **Checkout Completo**: Proceso de compra integrado con base de datos
-- **Dashboard de Ventas**: Análisis de ventas con gráficos (Recharts)
-- **Sistema de Reviews**: Reseñas y valoraciones de usuarios
+- **Autenticación (NUEVO)**: Registro e inicio de sesión de usuarios seguros.
+- **Perfil de Usuario (NUEVO)**: Panel personalizado con datos del usuario y estadísticas de gastos.
+- **Historial Desplegable (NUEVO)**: Revisión detallada de compras previas con portadas en miniatura y precios seccionados.
+- **Catálogo Interactivo**: Navegación fluida por cómics con filtros avanzados "retroactivos".
+- **Carrito Inteligente**: Persistente en localStorage con gestión de cantidades.
+- **Checkout Completo**: Proceso de compra integrado con base de datos.
+- **Dashboard de Ventas**: Análisis gráfico de ventas general (Recharts).
+- **Sistema de Reviews**: Reseñas y valoraciones de usuarios.
 
 ### 🏗️ **Arquitectura y Desarrollo**
 - **Arquitectura Hexagonal**: Separación perfecta de responsabilidades
@@ -173,10 +181,15 @@ PORT=4000
 
 ### 🛒 Orders
 - `POST /orders` - Crear nueva orden
+- `GET /ventas/user/:userId` - Historial de órdenes de un cliente (NUEVO)
 
 ### 📊 Analytics
 - `GET /ventas` - Datos de ventas
 - `GET /ventas-mensuales` - Análisis mensual
+
+### 🔐 Authentication
+- `POST /auth/login` - Ingreso de usuarios existentes (NUEVO)
+- `POST /auth/register` - Registro de nuevos usuarios (NUEVO)
 
 ## 🔧 Configuración de Desarrollo
 
