@@ -20,6 +20,7 @@ export function createRoutes(
   router.post('/orders', (req, res) => orderController.createOrder(req, res));
   router.get('/ventas', (req, res) => orderController.getSales(req, res));
   router.get('/ventas-mensuales', (req, res) => orderController.getMonthlySales(req, res));
+  router.get('/ventas/user/:userId', (req, res) => orderController.getUserSales(req, res));
 
   // Review routes
   router.get('/reviews/:comic_id', (req, res) => reviewController.getReviewsByComicId(req, res));

@@ -4,6 +4,7 @@ import ComicDetail from './components/ComicDetail';
 import HomePage from './components/HomePage';
 import VentasTienda from './components/VentasTienda';
 import Carrito from './components/Carrito';
+import UserProfile from './components/UserProfile';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import { ErrorBoundary, Button, LoadingSpinner } from './components/common';
@@ -67,7 +68,10 @@ function App() {
             🛒 Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})
           </Button>
           {user ? (
-            <Button onClick={logout}>🚪 Salir ({user.user_name})</Button>
+            <>
+              <Button onClick={() => navigateTo('perfil')}>👤 Mi Perfil</Button>
+              <Button onClick={logout}>🚪 Salir</Button>
+            </>
           ) : (
             <Button onClick={() => navigateTo('login')}>👤 Ingresar</Button>
           )}
@@ -100,6 +104,7 @@ function App() {
       {vista === 'ventas' && <VentasTienda />}
       {vista === 'login' && <Login onLogin={actions.login} />}
       {vista === 'register' && <Register onLogin={actions.login} />}
+      {vista === 'perfil' && user && <UserProfile user={user} onLogout={logout} />}
     </ErrorBoundary>
   );
 }

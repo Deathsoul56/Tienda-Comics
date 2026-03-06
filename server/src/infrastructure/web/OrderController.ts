@@ -53,4 +53,15 @@ export class OrderController {
       res.status(500).json({ error: 'Failed to get monthly sales' });
     }
   }
+
+  async getUserSales(req: Request, res: Response): Promise<void> {
+    try {
+      const { userId } = req.params;
+      const sales = await this.getSalesUseCase.getUserSales(Number(userId));
+      res.json(sales);
+    } catch (error) {
+      console.error('Error getting user sales:', error);
+      res.status(500).json({ error: 'Failed to get user sales' });
+    }
+  }
 }

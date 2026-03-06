@@ -19,4 +19,12 @@ export class GetSalesUseCase {
       throw new Error(`Failed to get monthly sales: ${error}`);
     }
   }
+
+  async getUserSales(userId: number): Promise<Order[]> {
+    try {
+      return await this.orderRepository.findByUserId(userId);
+    } catch (error) {
+      throw new Error(`Failed to get user sales: ${error}`);
+    }
+  }
 }

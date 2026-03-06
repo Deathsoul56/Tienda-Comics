@@ -32,7 +32,10 @@ const NavBar: React.FC<NavBarProps> = ({ onNav, cartCount, user, onLogout }) => 
       <button className="btn-modern" onClick={() => onNav('ventas')}>📈 Ventas</button>
       <button className="btn-modern" onClick={() => onNav('carrito')}>🛒 Carrito ({cartCount})</button>
       {user ? (
-        <button className="btn-modern" onClick={onLogout}>🚪 Salir ({user.user_name})</button>
+        <>
+          <button className="btn-modern" onClick={() => onNav('perfil')}>👤 Mi Perfil</button>
+          <button className="btn-modern" onClick={onLogout}>🚪 Salir</button>
+        </>
       ) : (
         <button className="btn-modern" onClick={() => onNav('login')}>👤 Ingresar</button>
       )}

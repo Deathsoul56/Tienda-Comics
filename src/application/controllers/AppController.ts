@@ -39,7 +39,7 @@ export function useAppState() {
 
     // Handle legacy navigation events
     const handleLegacyNavigation = (e: CustomEvent) => {
-      if (['home', 'catalogo', 'ventas', 'carrito', 'login', 'register'].includes(e.detail)) {
+      if (['home', 'catalogo', 'ventas', 'carrito', 'login', 'register', 'perfil'].includes(e.detail)) {
         setVista(e.detail);
         setSelectedComicId(null);
       }

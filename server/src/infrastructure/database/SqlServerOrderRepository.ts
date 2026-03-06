@@ -45,14 +45,40 @@ export class SqlServerOrderRepository implements OrderRepository {
     try {
       await sql.connect(this.dbConfig);
       const result = await sql.query(`
-        SELECT o.order_id, u.user_name, o.user_id, o.order_date, o.total_amount, o.status, o.items
-        FROM ${process.env.DB_DATABASE}.dbo.Orders o
-        LEFT JOIN ${process.env.DB_DATABASE}.dbo.Users u ON o.user_id = u.user_id
-        WHERE o.user_id = ${userId}
-        ORDER BY o.order_date DESC
+        SELECT order_id, user_name, user_id, order_date, total_amount, status, 
+               comic_id, title, quantity, unitary_price as price
+        FROM ${process.env.DB_DATABASE}.dbo.Orders_Details
+        WHERE user_id = ${userId}
+        ORDER BY order_date DESC
       `);
 
-      return result.recordset.map(this.mapOrderRecord);
+      const ordersMap = new Map<number, Order>();
+
+      for (const row of result.recordset) {
+        if (!ordersMap.has(row.order_id)) {
+          ordersMap.set(row.order_id, {
+            order_id: row.order_id,
+            user_id: row.user_id,
+            user_name: row.user_name || `User ${row.user_id}`,
+            order_date: new Date(row.order_date),
+            total_amount: row.total_amount,
+            status: row.status as OrderStatus,
+            items: []
+          });
+        }
+        
+        const order = ordersMap.get(row.order_id)!;
+        if (row.comic_id) {
+          (order.items as any[]).push({
+            comic_id: row.comic_id,
+            title: row.title,
+            price: row.price,
+            quantity: row.quantity
+          });
+        }
+      }
+
+      return Array.from(ordersMap.values());
     } catch (error) {
       throw new Error(`Database error: ${error}`);
     }
