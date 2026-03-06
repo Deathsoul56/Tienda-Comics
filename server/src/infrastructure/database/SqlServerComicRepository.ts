@@ -190,7 +190,11 @@ export class SqlServerComicRepository implements ComicRepository {
   private mapComicsWithImages(records: any[]): Comic[] {
     const fs = require('fs');
     const path = require('path');
-    const imagesDir = path.join(__dirname, '../../../public/images');
+    
+    // Resolvemos public relative to the root server folder (where process.cwd() is /server)
+    // Wait, the client is usually in ../public from server.
+    // Let's go out of server completely: ../public/images
+    const imagesDir = path.join(process.cwd(), '../public/images');
 
     return records.map((record: any) => {
       const baseName = record.title;

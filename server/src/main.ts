@@ -20,7 +20,8 @@ const container = new DependencyContainer();
 const routes = createRoutes(
   container.comicController,
   container.orderController,
-  container.reviewController
+  container.reviewController,
+  container.authController
 );
 
 app.use('/', routes);

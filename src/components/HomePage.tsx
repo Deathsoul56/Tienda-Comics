@@ -1,32 +1,41 @@
 import React, { useEffect, useState, useMemo } from "react";
-import type { Comic } from '../domain/entities';
+import type { Comic, User } from '../domain/entities';
 import ComicDetail from "./ComicDetail";
 import { container } from '../infrastructure/DependencyContainer';
 
 // --- Barra de navegación ---
-const NavBar: React.FC<{ onNav: (vista: string) => void; cartCount: number }> = ({ onNav, cartCount }) => (
+interface NavBarProps {
+  onNav: (vista: string) => void;
+  cartCount: number;
+  user: User | null;
+  onLogout: () => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ onNav, cartCount, user, onLogout }) => (
   <nav style={{
-    position: 'fixed', top: 0, left: -45, width: '100vw', zIndex: 100,
+    position: 'fixed', top: 0, left: 0, width: '100vw', zIndex: 100,
     background: 'rgba(36,36,44,0.92)',
     backdropFilter: 'blur(6px)',
     boxShadow: '0 2px 16px #0006',
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap',
     padding: '0.7rem 2.5vw',
     borderBottom: '1.5px solid #646cff44',
-    margin: 0,
-    right: 0,
-    maxWidth: '100vw',
-    minWidth: 0,
+    boxSizing: 'border-box'
   }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
       <img src="/logo.ico" alt="Logo" style={{ width: 44, height: 44, borderRadius: 12, marginRight: 12 }} />
       <span style={{ color: '#646cff', fontWeight: 'bold', fontSize: '1.5em', letterSpacing: '1.5px' }}>Hexagonal Comic Store</span>
     </div>
-    <div style={{ display: 'flex', gap: 12 }}>
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
       <button className="btn-modern" onClick={() => onNav('home')}>🏠 Inicio</button>
       <button className="btn-modern" onClick={() => onNav('catalogo')}>📚 Catálogo</button>
       <button className="btn-modern" onClick={() => onNav('ventas')}>📈 Ventas</button>
       <button className="btn-modern" onClick={() => onNav('carrito')}>🛒 Carrito ({cartCount})</button>
+      {user ? (
+        <button className="btn-modern" onClick={onLogout}>🚪 Salir ({user.user_name})</button>
+      ) : (
+        <button className="btn-modern" onClick={() => onNav('login')}>👤 Ingresar</button>
+      )}
     </div>
   </nav>
 );
@@ -215,25 +224,32 @@ const ComicReviews: React.FC<{ comicId: number }> = ({ comicId }) => {
 };
 
 // --- HomePage principal ---
-const HomePage: React.FC = () => {
+interface HomePageProps {
+  user?: User | null;
+  onLogout?: () => void;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ user, onLogout }) => {
   const [comics, setComics] = useState<Comic[]>([]);
   const [cartCount, setCartCount] = useState(0);
   const [selectedComic, setSelectedComic] = useState<Comic | null>(null);
+
   useEffect(() => {
+    // ... (rest of the code is fine, but we need to re-declare it inside since I am replacing the FC definition)
     const loadData = async () => {
       try {
         const comicsData = await container.getComicsUseCase.execute();
         setComics(comicsData);
-        
+
         const cartSummary = await container.cartUseCase.getCartSummary();
         setCartCount(cartSummary.totalItems);
       } catch (error) {
         console.error('Error loading data:', error);
       }
     };
-    
+
     loadData();
-    
+
     const updateCartCount = async () => {
       try {
         const cartSummary = await container.cartUseCase.getCartSummary();
@@ -243,13 +259,15 @@ const HomePage: React.FC = () => {
         setCartCount(0);
       }
     };
-    
+
     window.addEventListener('storage', updateCartCount);
     return () => window.removeEventListener('storage', updateCartCount);
   }, []);
 
   // Navegación
   const onNav = (vista: string) => {
+    // We can dispatch the event or use a prop if provided, but for consistency with legacy we dispatch event
+    // However, for login/logout we can use the props directly in the NavBar
     window.dispatchEvent(new CustomEvent('changeVista', { detail: vista }));
   };
   // Ir a detalles directo en Home
@@ -259,7 +277,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div style={{ background: 'transparent', minHeight: '100vh', paddingTop: 80 }}>
-      <NavBar onNav={onNav} cartCount={cartCount} />
+      <NavBar onNav={onNav} cartCount={cartCount} user={user || null} onLogout={onLogout || (() => { })} />
       <HomeSlider />
       <SearchBar comics={comics} onSelect={goToDetail} />
       {selectedComic ? (

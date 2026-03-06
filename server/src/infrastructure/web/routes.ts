@@ -2,11 +2,13 @@ import { Router } from 'express';
 import { ComicController } from './ComicController';
 import { OrderController } from './OrderController';
 import { ReviewController } from './ReviewController';
+import { AuthController } from './AuthController';
 
 export function createRoutes(
   comicController: ComicController,
   orderController: OrderController,
-  reviewController: ReviewController
+  reviewController: ReviewController,
+  authController: AuthController
 ): Router {
   const router = Router();
 
@@ -21,6 +23,10 @@ export function createRoutes(
 
   // Review routes
   router.get('/reviews/:comic_id', (req, res) => reviewController.getReviewsByComicId(req, res));
+
+  // Auth routes
+  router.post('/auth/register', (req, res) => authController.register(req, res));
+  router.post('/auth/login', (req, res) => authController.login(req, res));
 
   return router;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useComicFilters } from '../hooks/useComicFilters';
 import { useCartNotification } from '../hooks/useCartNotification';
 import type { Comic } from '../domain/entities';
@@ -21,6 +21,38 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
     priceRange: ''
   };
   const [filters, setFilters] = useState(initialFilters);
+  const [allComics, setAllComics] = useState<Comic[]>([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/comics`)
+      .then(res => res.json())
+      .then(data => setAllComics(Array.isArray(data) ? data : []))
+      .catch(err => console.error("Error loading all comics", err));
+  }, []);
+
+  const activeComics = allComics.length > 0 ? allComics : comics;
+
+  const availableAuthors = new Set(
+    activeComics.filter(c => 
+      (!filters.publisher || c.publisher === filters.publisher) &&
+      (!filters.genre || c.genre === filters.genre)
+    ).map(c => c.author)
+  );
+
+  const availablePublishers = new Set(
+    activeComics.filter(c => 
+      (!filters.author || c.author === filters.author) &&
+      (!filters.genre || c.genre === filters.genre)
+    ).map(c => c.publisher)
+  );
+
+  const availableGenres = new Set(
+    activeComics.filter(c => 
+      (!filters.author || c.author === filters.author) &&
+      (!filters.publisher || c.publisher === filters.publisher)
+    ).map(c => c.genre)
+  );
+
   const priceRanges = [
     { label: 'Todos', value: '' },
     { label: '0 - 5', value: '0-5' },
@@ -190,7 +222,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
               onBlur={(e) => e.target.style.borderColor = '#333'}
             >
               <option value="">Todos los autores</option>
-              {authors.map((author) => (
+              {authors.filter(a => availableAuthors.has(a) || filters.author === a).map((author) => (
                 <option key={author} value={author}>{author}</option>
               ))}
             </select>
@@ -226,7 +258,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
               onBlur={(e) => e.target.style.borderColor = '#333'}
             >
               <option value="">Todas las editoriales</option>
-              {publishers.map((publisher) => (
+              {publishers.filter(p => availablePublishers.has(p) || filters.publisher === p).map((publisher) => (
                 <option key={publisher} value={publisher}>{publisher}</option>
               ))}
             </select>
@@ -262,7 +294,7 @@ const CatalogoComics: React.FC<CatalogoComicsProps> = ({ comics, onSearch, onCom
               onBlur={(e) => e.target.style.borderColor = '#333'}
             >
               <option value="">Todos los géneros</option>
-              {genres.map((genre) => (
+              {genres.filter(g => availableGenres.has(g) || filters.genre === g).map((genre) => (
                 <option key={genre} value={genre}>{genre}</option>
               ))}
             </select>

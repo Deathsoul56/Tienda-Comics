@@ -145,8 +145,8 @@ npm install
 
 # Desarrollo
 cd server
-npx tsc # Compilar TypeScript
-node dist/index.js # Ejecutar servidor
+npm run build
+npm run start # Ejecutar servidor (node dist/main.js)
 ```
 
 ### 🗄️ Base de Datos

@@ -4,21 +4,24 @@ import ComicDetail from './components/ComicDetail';
 import HomePage from './components/HomePage';
 import VentasTienda from './components/VentasTienda';
 import Carrito from './components/Carrito';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import { ErrorBoundary, Button, LoadingSpinner } from './components/common';
 import { useAppState } from './application/controllers/AppController';
 
 
 function App() {
   const { state, actions } = useAppState();
-  const { vista, cart, comics, selectedComic, selectedComicId, isLoading, error } = state;
-  const { 
-    fetchComics, 
-    addToCart, 
-    removeFromCart, 
-    updateCartQuantity, 
+  const { vista, cart, comics, selectedComic, selectedComicId, isLoading, error, user } = state;
+  const {
+    fetchComics,
+    addToCart,
+    removeFromCart,
+    updateCartQuantity,
     checkout,
     setSelectedComicId,
-    navigateTo
+    navigateTo,
+    logout
   } = actions;
   if (isLoading) {
     return <LoadingSpinner size="large" text="Cargando aplicación..." />;
@@ -39,7 +42,7 @@ function App() {
           maxWidth: '300px'
         }}>
           {error}
-          <button 
+          <button
             onClick={() => window.location.reload()}
             style={{
               marginLeft: '1rem',
@@ -63,6 +66,11 @@ function App() {
           <Button onClick={() => navigateTo('carrito')}>
             🛒 Carrito ({cart.reduce((sum, item) => sum + item.quantity, 0)})
           </Button>
+          {user ? (
+            <Button onClick={logout}>🚪 Salir ({user.user_name})</Button>
+          ) : (
+            <Button onClick={() => navigateTo('login')}>👤 Ingresar</Button>
+          )}
         </div>
       )}
       {vista === 'catalogo' && selectedComicId === null && (
@@ -80,7 +88,7 @@ function App() {
           <div style={{ color: '#fff', padding: '2rem', textAlign: 'center' }}>Cómic no encontrado.</div>
         )
       )}
-      {vista === 'home' && <HomePage />}
+      {vista === 'home' && <HomePage user={user} onLogout={logout} />}
       {vista === 'carrito' && (
         <Carrito
           items={cart}
@@ -90,6 +98,8 @@ function App() {
         />
       )}
       {vista === 'ventas' && <VentasTienda />}
+      {vista === 'login' && <Login onLogin={actions.login} />}
+      {vista === 'register' && <Register onLogin={actions.login} />}
     </ErrorBoundary>
   );
 }

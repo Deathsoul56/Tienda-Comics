@@ -48,7 +48,13 @@ const VentasTienda: React.FC = () => {
     fetch(`${apiUrl}/ventas-mensuales`)
       .then(res => res.json())
       .then(data => {
-        setMensuales(data);
+        const mappedData = Array.isArray(data) ? data.map((d: any) => ({
+          Year: d.year ?? d.Year,
+          Month: d.month ?? d.Month,
+          TotalSales: d.totalSales ?? d.TotalSales,
+          TotalOrders: d.totalOrders ?? d.TotalOrders
+        })) : [];
+        setMensuales(mappedData);
         setLoadingMensuales(false);
       })
       .catch(() => {
@@ -90,11 +96,15 @@ const VentasTienda: React.FC = () => {
     userSales[v.user_name] = (userSales[v.user_name] || 0) + 1;
     // Contar ventas por cómic
     try {
-      const items = JSON.parse(v.items);
-      items.forEach((item: { comic_id: number; quantity: number }) => {
-        comicSales[item.comic_id] = (comicSales[item.comic_id] || 0) + item.quantity;
-      });
-    } catch {}
+      const items = typeof v.items === 'string' ? JSON.parse(v.items) : v.items;
+      if (Array.isArray(items)) {
+        items.forEach((item: { comic_id: number; quantity: number }) => {
+          comicSales[item.comic_id] = (comicSales[item.comic_id] || 0) + (item.quantity || 1);
+        });
+      }
+    } catch (e) {
+      console.warn("Error parsing items for top comics", e);
+    }
   });
   // Top 10 cómics vendidos (con nombre)
   const topComics = Object.entries(comicSales)

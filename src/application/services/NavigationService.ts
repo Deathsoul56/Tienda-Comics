@@ -1,4 +1,4 @@
-export type ViewType = 'home' | 'catalogo' | 'ventas' | 'carrito';
+export type ViewType = 'home' | 'catalogo' | 'ventas' | 'carrito' | 'login' | 'register';
 
 export class NavigationService {
   private static instance: NavigationService;
@@ -8,7 +8,7 @@ export class NavigationService {
   private constructor() {
     // Listen for custom navigation events
     window.addEventListener('changeVista', ((e: CustomEvent) => {
-      if (['home', 'catalogo', 'ventas', 'carrito'].includes(e.detail)) {
+      if (['home', 'catalogo', 'ventas', 'carrito', 'login', 'register'].includes(e.detail)) {
         this.navigateTo(e.detail);
       }
     }) as EventListener);
@@ -24,7 +24,7 @@ export class NavigationService {
   public navigateTo(view: ViewType): void {
     this.currentView = view;
     this.notifyListeners(view);
-    
+
     // Dispatch event for backwards compatibility
     window.dispatchEvent(new CustomEvent('navigationChange', { detail: view }));
   }
@@ -35,7 +35,7 @@ export class NavigationService {
 
   public subscribe(listener: (view: ViewType) => void): () => void {
     this.listeners.push(listener);
-    
+
     // Return unsubscribe function
     return () => {
       const index = this.listeners.indexOf(listener);

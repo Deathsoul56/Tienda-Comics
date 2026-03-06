@@ -1,10 +1,11 @@
 import { dbConfig } from './DatabaseConfig';
 
 // Repositories
-import { 
+import {
   SqlServerComicRepository,
-  SqlServerOrderRepository, 
-  SqlServerReviewRepository 
+  SqlServerOrderRepository,
+  SqlServerReviewRepository,
+  SqlServerUserRepository
 } from '../database';
 
 // Use Cases
@@ -13,14 +14,16 @@ import {
   GetComicFiltersUseCase,
   CreateOrderUseCase,
   GetReviewsUseCase,
-  GetSalesUseCase
+  GetSalesUseCase,
+  AuthUseCase
 } from '../../application/usecases';
 
 // Controllers
 import {
   ComicController,
   OrderController,
-  ReviewController
+  ReviewController,
+  AuthController
 } from '../web';
 
 export class DependencyContainer {
@@ -28,6 +31,7 @@ export class DependencyContainer {
   public readonly comicRepository: SqlServerComicRepository;
   public readonly orderRepository: SqlServerOrderRepository;
   public readonly reviewRepository: SqlServerReviewRepository;
+  public readonly userRepository: SqlServerUserRepository;
 
   // Use Cases
   public readonly getComicsUseCase: GetComicsUseCase;
@@ -35,17 +39,20 @@ export class DependencyContainer {
   public readonly createOrderUseCase: CreateOrderUseCase;
   public readonly getReviewsUseCase: GetReviewsUseCase;
   public readonly getSalesUseCase: GetSalesUseCase;
+  public readonly authUseCase: AuthUseCase;
 
   // Controllers
   public readonly comicController: ComicController;
   public readonly orderController: OrderController;
   public readonly reviewController: ReviewController;
+  public readonly authController: AuthController;
 
   constructor() {
     // Initialize repositories
     this.comicRepository = new SqlServerComicRepository(dbConfig);
     this.orderRepository = new SqlServerOrderRepository(dbConfig);
     this.reviewRepository = new SqlServerReviewRepository(dbConfig);
+    this.userRepository = new SqlServerUserRepository(dbConfig);
 
     // Initialize use cases
     this.getComicsUseCase = new GetComicsUseCase(this.comicRepository);
@@ -56,15 +63,18 @@ export class DependencyContainer {
 
     // Initialize controllers
     this.comicController = new ComicController(
-      this.getComicsUseCase, 
+      this.getComicsUseCase,
       this.getComicFiltersUseCase
     );
-    
+
     this.orderController = new OrderController(
       this.createOrderUseCase,
       this.getSalesUseCase
     );
-    
+
     this.reviewController = new ReviewController(this.getReviewsUseCase);
+
+    this.authUseCase = new AuthUseCase(this.userRepository);
+    this.authController = new AuthController(this.authUseCase);
   }
 }

@@ -8,8 +8,22 @@ export function useAppState() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [comics, setComics] = useState<Comic[]>([]);
   const [selectedComicId, setSelectedComicId] = useState<number | null>(null);
+  const [user, setUser] = useState<any>(null); // TODO: Type this properly
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Load user from local storage
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (e) {
+      console.error('Error parsing stored user:', e);
+      localStorage.removeItem('user');
+    }
+  }, []);
 
   // Load initial data
   useEffect(() => {
@@ -25,7 +39,7 @@ export function useAppState() {
 
     // Handle legacy navigation events
     const handleLegacyNavigation = (e: CustomEvent) => {
-      if (['home', 'catalogo', 'ventas', 'carrito'].includes(e.detail)) {
+      if (['home', 'catalogo', 'ventas', 'carrito', 'login', 'register'].includes(e.detail)) {
         setVista(e.detail);
         setSelectedComicId(null);
       }
@@ -53,11 +67,23 @@ export function useAppState() {
     fetchComics: (params = {}) => fetchComics(params, setComics, setError),
     addToCart: (comic: Comic) => addToCart(comic, setCart, setError),
     removeFromCart: (id: number) => removeFromCart(id, setCart, setError),
-    updateCartQuantity: (id: number, quantity: number) => 
+    updateCartQuantity: (id: number, quantity: number) =>
       updateCartQuantity(id, quantity, setCart, setError),
     checkout: () => checkout(setCart, setError),
     setSelectedComicId,
-    navigateTo: (view: ViewType) => navigationService.navigateTo(view)
+    navigateTo: (view: ViewType) => navigationService.navigateTo(view),
+    login: (userData: any, token: string) => {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
+      navigationService.navigateTo('home');
+    },
+    logout: () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setUser(null);
+      navigationService.navigateTo('login');
+    }
   };
 
   const selectedComic = comics.find((c: Comic) => c.comic_id === selectedComicId) || null;
@@ -69,6 +95,7 @@ export function useAppState() {
       comics,
       selectedComicId,
       selectedComic,
+      user,
       isLoading,
       error
     },
