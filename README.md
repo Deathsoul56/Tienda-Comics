@@ -94,6 +94,25 @@ src/
     ├── storage/            # Adaptadores de almacenamiento
     │   └── LocalStorageCartRepository.ts
     └── DependencyContainer.ts # Inyección de dependencias
+
+server/src/
+├── 📋 application/
+│   └── usecases/            # Lógica de servidor
+│       ├── AuthUseCase.ts   # Autenticación y JWT
+│       ├── GetSalesUseCase.ts
+│       └── CreateOrderUseCase.ts
+├── 🏛️ domain/
+│   └── repositories/        # Puertos de BD
+├── 🔧 infrastructure/
+│   ├── database/            # Implementaciones SQL Server
+│   │   ├── SqlServerUserRepository.ts
+│   │   ├── SqlServerOrderRepository.ts
+│   │   ├── SqlServerReviewRepository.ts
+│   │   └── SqlServerComicRepository.ts
+│   └── web/                 # Controladores Express
+│       ├── AuthController.ts
+│       ├── OrderController.ts
+│       └── routes.ts
 ```
 
 ## ✨ Características Principales
@@ -167,6 +186,7 @@ DB_PASSWORD=your_password
 PORT=4000
 
 # Ejecutar scripts SQL desde server/sql/
+# (Incluye tablas: Users, Comics, Orders, Reviews, y vistas como Orders_Details)
 ```
 
 ## 🌐 API Endpoints
