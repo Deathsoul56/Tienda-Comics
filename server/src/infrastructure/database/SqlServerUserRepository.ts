@@ -80,9 +80,39 @@ export class SqlServerUserRepository implements UserRepository {
     }
 
     async update(id: number, user: Partial<User>): Promise<User | null> {
-        // Basic implementation, update fields if present
-        // Note: For now, implementing simplistic update logic
-        throw new Error('Method not implemented.');
+        try {
+            await sql.connect(this.dbConfig);
+            const request = new sql.Request();
+            request.input('id', sql.Int, id);
+            
+            const queryOptions: string[] = [];
+            if (user.user_name !== undefined) {
+                queryOptions.push('user_name = @user_name');
+                request.input('user_name', sql.NVarChar, user.user_name);
+            }
+            if (user.first_name !== undefined) {
+                queryOptions.push('first_name = @first_name');
+                request.input('first_name', sql.NVarChar, user.first_name);
+            }
+            if (user.last_name !== undefined) {
+                queryOptions.push('last_name = @last_name');
+                request.input('last_name', sql.NVarChar, user.last_name);
+            }
+            
+            if (queryOptions.length === 0) return this.findById(id);
+
+            queryOptions.push('updated_at = GETDATE()');
+            
+            await request.query(`
+                UPDATE Users 
+                SET ${queryOptions.join(', ')}
+                WHERE user_id = @id
+            `);
+
+            return this.findById(id);
+        } catch (error) {
+            throw new Error(`Database error: ${error}`);
+        }
     }
 
     async delete(id: number): Promise<boolean> {

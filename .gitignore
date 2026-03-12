@@ -31,3 +31,6 @@ dist-ssr
 
 # Claude
 .Claude
+
+# OS files
+Thumbs.db

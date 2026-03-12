@@ -1,0 +1,31 @@
+info:
+  name: Get Comics
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: http://localhost:4000/comics?author=Brian K. Vaughan&publisher=Vertigo&genre=Science Fiction&priceRange=1-5&order=price_desc
+  params:
+    - name: author
+      value: Brian K. Vaughan
+      type: query
+    - name: publisher
+      value: Vertigo
+      type: query
+    - name: genre
+      value: Science Fiction
+      type: query
+    - name: priceRange
+      value: 1-5
+      type: query
+    - name: order
+      value: price_desc
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

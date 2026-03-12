@@ -28,6 +28,11 @@ export function createRoutes(
   // Auth routes
   router.post('/auth/register', (req, res) => authController.register(req, res));
   router.post('/auth/login', (req, res) => authController.login(req, res));
+  router.patch('/auth/change-username', (req, res) => authController.changeUsername(req, res));
+  
+  // --- ENDPOINT SOLO PARA TESTING ---
+  // Elimina un usuario. No llamar desde el frontend web.
+  router.delete('/auth/test-delete', (req, res) => authController.deleteTestUser(req, res));
 
   return router;
 }

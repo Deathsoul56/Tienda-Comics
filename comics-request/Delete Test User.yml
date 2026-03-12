@@ -1,0 +1,24 @@
+info:
+  name: Delete Test User
+  type: http
+  seq: 8
+
+http:
+  method: DELETE
+  url: http://localhost:4000/auth/test-delete
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "jane.test@example.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

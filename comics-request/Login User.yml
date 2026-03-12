@@ -1,0 +1,25 @@
+info:
+  name: Login User
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:4000/auth/login
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "john.doe@example.com",
+        "password": "hashed_password_1"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

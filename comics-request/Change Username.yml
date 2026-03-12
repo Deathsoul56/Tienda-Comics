@@ -1,0 +1,28 @@
+info:
+  name: Change Username
+  type: http
+  seq: 9
+
+http:
+  method: PATCH
+  url: http://localhost:4000/auth/change-username
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "john.doe@example.com",
+        "new_username": "john_doe"
+      }
+
+      // john_doe
+      // jane_super_pro
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
