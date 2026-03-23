@@ -1,0 +1,35 @@
+USE Cazuela
+GO
+
+INSERT INTO Suppliers (supplier_name, contact_name, address, city, state, country, postal_code, phone_number, email) VALUES
+-- USA Suppliers
+('ABC Supply Co.', 'John Smith', '123 Main Street', 'Chicago', 'IL', 'USA', '60601', '(312) 555-0123', 'jsmith@abcsupply.com'),
+('XYZ Distribution', 'Maria Garcia', '456 Commerce Ave', 'Los Angeles', 'CA', 'USA', '90012', '(213) 555-8976', 'mgarcia@xyzdist.com'),
+('Global Comics Inc.', 'Robert Chen', '789 Market Blvd', 'San Francisco', 'CA', 'USA', '94105', '(415) 555-3344', 'rchen@globalfoods.com'),
+('Fresh Produce Co.', 'Sarah Johnson', '321 Harvest Road', 'Seattle', 'WA', 'USA', '98101', '(206) 555-7890', 'sjohnson@freshproduce.com'),
+('Quality Meats Inc.', 'David Brown', '567 Butcher Lane', 'Dallas', 'TX', 'USA', '75201', '(214) 555-4567', 'dbrown@qualitymeats.com'),
+('Organic Farms Co-op', 'Lisa Green', '890 Natural Way', 'Portland', 'OR', 'USA', '97201', '(503) 555-9876', 'lgreen@organicfarms.org'),
+-- LATAM Suppliers
+('Mexican Imports Ltd.', 'Carlos Rodriguez', 'Av. Revolucion 1234', 'Mexico City', 'CDMX', 'Mexico', '06100', '(55) 5555-1212', 'crodriguez@mexicanimports.com'),
+-- Asian Suppliers
+('Manga Nippon Distribution', 'Haruto Sato', '2-15-1 Shibuya', 'Tokyo', 'Tokyo', 'Japan', '150-0002', '+81 3-1234-5678', 'hsato@manganippon.jp'),
+('Tokyo Manga Hub', 'Yuki Tanaka', '5-10-1 Ginza', 'Tokyo', 'Tokyo', 'Japan', '104-0061', '+81 3-5555-6789', 'ytanaka@tokyomangahub.jp'),
+('Osaka Otaku Supplies', 'Sora Nakamura', '3-2-8 Namba', 'Osaka', 'Osaka', 'Japan', '542-0076', '+81 6-1234-5678', 'snakamura@osakaotaku.jp'),
+('Seoul Manhwa Export', 'Minji Kim', '88 Gangnam-daero', 'Seoul', 'Seoul', 'South Korea', '06236', '+82 2-555-1234', 'mkim@seoulmanhwa.kr'),
+('Busan Manhwa Center', 'Jisoo Park', '77 Haeundae-ro', 'Busan', 'Busan', 'South Korea', '48095', '+82 51-555-7890', 'jpark@busanmanhwa.kr'),
+('Incheon Comics Export', 'Hyunwoo Lee', '12 Songdo-dong', 'Incheon', 'Incheon', 'South Korea', '22382', '+82 32-123-4567', 'hlee@incheoncomics.kr'),
+('Asian Comics Traders', 'Lee Ming', '45 Trade Street', 'Singapore', 'Central Region', 'Singapore', '068813', '+65 6789 0123', 'ming@asianspice.sg'),
+('Shanghai Graphic Distribution', 'Wei Zhang', '200 Nanjing Road', 'Shanghai', 'Shanghai', 'China', '200001', '+86 21-5555-8888', 'wzhang@shanghaigraphic.cn'),
+('Spice World Trading', 'Raj Patel', '123 Flavor Street', 'Mumbai', 'Maharashtra', 'India', '400001', '+91 22 5555 0000', 'rpatel@spiceworld.in'),
+-- European Suppliers
+('European Delicacies', 'Anna Mueller', 'Hauptstrasse 42', 'Berlin', 'Berlin', 'Germany', '10115', '+49 30 555666', 'amueller@eurodel.de'),
+('Berlin Comic Vertrieb', 'Max Schneider', 'Comicsstraße 5', 'Berlin', 'Berlin', 'Germany', '10119', '+49 30 123456', 'mschneider@berlincomic.de'),
+('Milan Fumetti S.p.A.', 'Giovanni Rossi', 'Via dei Comics 22', 'Milan', 'Lombardia', 'Italy', '20121', '+39 02 1234 5678', 'grossi@milanfumetti.it'),
+('Paris BD Distribution', 'Claire Dubois', '12 Rue de la Bande Dessinée', 'Paris', 'Île-de-France', 'France', '75005', '+33 1 42 68 53 00', 'cdubois@parisbd.fr'),
+('Barcelona Novela Gráfica', 'Lucía Martínez', 'Carrer del Còmic 8', 'Barcelona', 'Cataluña', 'Spain', '08001', '+34 93 123 4567', 'lmartinez@bcnnovelagrafica.es');
+GO
+
+/* Cleanup commands (descomenta para hacer reset completo)
+DELETE FROM Suppliers WHERE supplier_id >= 0;
+DBCC CHECKIDENT (Suppliers, RESEED, 0);
+*/
