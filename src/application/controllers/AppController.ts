@@ -83,6 +83,10 @@ export function useAppState() {
       localStorage.removeItem('user');
       setUser(null);
       navigationService.navigateTo('login');
+    },
+    updateUser: (userData: any) => {
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
     }
   };
 

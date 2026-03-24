@@ -22,7 +22,8 @@ function App() {
     checkout,
     setSelectedComicId,
     navigateTo,
-    logout
+    logout,
+    updateUser
   } = actions;
   if (isLoading) {
     return <LoadingSpinner size="large" text="Cargando aplicación..." />;
@@ -104,7 +105,7 @@ function App() {
       {vista === 'ventas' && <VentasTienda />}
       {vista === 'login' && <Login onLogin={actions.login} />}
       {vista === 'register' && <Register onLogin={actions.login} />}
-      {vista === 'perfil' && user && <UserProfile user={user} onLogout={logout} />}
+      {vista === 'perfil' && user && <UserProfile user={user} onLogout={logout} onUpdateUser={updateUser} />}
     </ErrorBoundary>
   );
 }

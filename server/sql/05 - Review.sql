@@ -78,3 +78,57 @@ VALUES (
     4.3, -- Calificación
     'La saga de Spiderman contra Venom es simplemente espectacular. La tensión entre Eddie Brock y Peter Parker añade profundidad a la historia, y las escenas de acción son impresionantes. Me encantó cómo exploran el lado humano de Spiderman y sus dilemas morales. Sin duda, uno de los mejores arcos del personaje.'
 );
+
+-- john_doe reseña The Amazing Spider-Man
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    1,   -- ID del cómic The Amazing Spider-Man
+    1,   -- ID del usuario (john_doe)
+    5.0, -- Calificación (de 1 a 5)
+    '¡Increíble inicio para Spiderman! The Amazing Spider-Man captura perfectamente la esencia de Peter Parker y su lucha diaria. Stan Lee hizo un trabajo maravilloso introduciendo al personaje, me encantó leer sobre sus orígenes y cómo combina la acción con problemas adolescentes comunes.'
+);
+
+-- mystique_blue reseña Maus
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    3,   -- ID del cómic Maus
+    23,  -- ID del usuario (mystique_blue)
+    4.9, -- Calificación (de 1 a 5)
+    'Maus es una obra que te rompe el corazón pero es absolutamente necesaria. Art Spiegelman relata la historia de una manera cruda y a la vez profundamente artística. La metáfora de los animales funciona a la perfección y te hace reflexionar sobre la naturaleza humana y la historia. Un cómic brillante.'
+);
+
+-- tony_stark reseña Saga
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    5,   -- ID del cómic Saga
+    7,   -- ID del usuario (tony_stark)
+    4.8, -- Calificación (de 1 a 5)
+    'Saga es, sin duda, una de las mejores óperas espaciales que he leído. Fiona Staples hace un trabajo artístico espectacular, y la historia de Brian K. Vaughan te atrapa desde las primeras páginas. Los personajes son sumamente complejos y no puedes evitar encariñarte con ellos, a pesar del universo caótico en el que viven.'
+);
+
+-- jane_smith reseña Transmetropolitan
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    12,  -- ID del cómic Transmetropolitan
+    2,   -- ID del usuario (jane_smith)
+    5.0, -- Calificación
+    'Transmetropolitan es una genialidad del ciberpunk. Spider Jerusalem es un protagonista amoral, caótico y a la vez el único que dice la verdad en un futuro distópico que se siente aterradoramente real. Warren Ellis construye un mundo fascinante lleno de crítica social.'
+);
+
+-- wonderwoman84 reseña Sandman
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    7,   -- ID del cómic Sandman
+    5,   -- ID del usuario (wonderwoman84)
+    4.9, -- Calificación
+    'Pocas obras logran lo que Neil Gaiman ha hecho con Sandman. Es poesía convertida en viñetas. La forma en que mezcla la mitología, los sueños y temas filosóficos es brillante. Morfeo es un personaje cautivador y el arte acompaña cada arco de historia de manera sublime.'
+);
+
+-- batman_fan reseña Persepolis
+INSERT INTO Reviews (comic_id, user_id, rating, review_text)
+VALUES (
+    4,   -- ID del cómic Persepolis
+    3,   -- ID del usuario (batman_fan)
+    4.7, -- Calificación
+    'Persepolis es una obra autobiográfica profundamente conmovedora. Marjane Satrapi logra transmitir la dureza de la revolución iraní y la guerra a través de los ojos de una niña que crece. Su estilo en blanco y negro es simple pero comunica mucho. Me abrió los ojos a otra realidad.'
+);

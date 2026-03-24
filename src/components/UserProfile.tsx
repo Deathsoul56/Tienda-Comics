@@ -35,11 +35,17 @@ import {
 interface UserProfileProps {
   user: User;
   onLogout: () => void;
+  onUpdateUser?: (userData: User) => void;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout }) => {
+const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout, onUpdateUser }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState(user.user_name || "");
+  const [updateError, setUpdateError] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/ventas/user/${user.user_id}`)
@@ -65,6 +71,50 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout }) => {
 
   const [activeTab, setActiveTab] = useState<'datos' | 'compras'>('datos');
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
+
+  const handleUpdateUsername = async () => {
+    if (!newUsername.trim()) {
+      setUpdateError("El nombre de usuario no puede estar vacío");
+      return;
+    }
+    
+    setIsUpdating(true);
+    setUpdateError("");
+    
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/change-username`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          email: user.email,
+          new_username: newUsername.trim()
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || "Error al actualizar el nombre de usuario");
+      }
+      
+      if (onUpdateUser) {
+        onUpdateUser({ ...user, user_name: newUsername.trim() });
+      }
+      setIsEditingUsername(false);
+    } catch (err) {
+      if (err instanceof Error) {
+        setUpdateError(err.message);
+      } else {
+        setUpdateError(String(err));
+      }
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   return (
     <div style={{ maxWidth: 900, margin: "3rem auto", padding: "2rem", background: "#1a1a1a", borderRadius: 16, border: "1px solid #333", color: "#fff" }}>
@@ -95,8 +145,44 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onLogout }) => {
           <div style={{ flex: 1, minWidth: 280, background: "#222", padding: "1.5rem", borderRadius: 12, border: "1px solid #444" }}>
             <h3 style={{ marginTop: 0, color: "#646cff" }}>Datos Personales</h3>
             <p><strong>Nombre:</strong> {user.first_name} {user.last_name}</p>
-            <p><strong>Usuario:</strong> {user.user_name}</p>
             <p><strong>Email:</strong> {user.email}</p>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
+              <strong>Usuario:</strong> 
+              {isEditingUsername ? (
+                <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+                  <input 
+                    type="text" 
+                    value={newUsername} 
+                    onChange={e => setNewUsername(e.target.value)} 
+                    style={{ padding: "0.4rem", borderRadius: 6, border: "1px solid #555", background: "#333", color: "#fff" }}
+                  />
+                  <button 
+                    onClick={handleUpdateUsername} 
+                    disabled={isUpdating}
+                    style={{ padding: "0.4rem 0.8rem", borderRadius: 6, background: "#00e676", color: "#000", border: "none", cursor: isUpdating ? "not-allowed" : "pointer", fontWeight: "bold" }}
+                  >
+                    Guardar
+                  </button>
+                  <button 
+                    onClick={() => { setIsEditingUsername(false); setNewUsername(user.user_name); setUpdateError(""); }}
+                    style={{ padding: "0.4rem 0.8rem", borderRadius: 6, background: "#e53935", color: "#fff", border: "none", cursor: "pointer", fontWeight: "bold" }}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <span>{user.user_name}</span>
+                  <button 
+                    onClick={() => setIsEditingUsername(true)}
+                    style={{ padding: "0.3rem 0.6rem", borderRadius: 4, background: "#444", color: "#fff", border: "none", cursor: "pointer", fontSize: "0.8rem" }}
+                  >
+                    ✏️ Editar
+                  </button>
+                </div>
+              )}
+            </div>
+            {updateError && <p style={{ color: "#ff6b6b", fontSize: "0.9rem", marginTop: "0.5rem" }}>{updateError}</p>}
           </div>
           <div style={{ flex: 1, minWidth: 280, background: "#222", padding: "1.5rem", borderRadius: 12, border: "1px solid #444", textAlign: "center", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <h3 style={{ marginTop: 0, color: "#646cff" }}>Estadísticas de Compra</h3>
