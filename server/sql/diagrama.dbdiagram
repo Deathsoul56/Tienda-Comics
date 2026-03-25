@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "detailLevel": "All",
+  "tablePositions": [
+    {
+      "name": "Users",
+      "schemaName": "public",
+      "x": 87.03042292112394,
+      "y": 1082.2888320599004
+    },
+    {
+      "name": "Comics",
+      "schemaName": "public",
+      "x": 98.34536432737394,
+      "y": 543.5189784245235
+    },
+    {
+      "name": "Orders",
+      "schemaName": "public",
+      "x": -293.60184843025286,
+      "y": 1077.5171145575982
+    },
+    {
+      "name": "Reviews",
+      "schemaName": "public",
+      "x": 631.9598639210712,
+      "y": 669.0613975481533
+    },
+    {
+      "name": "Suppliers",
+      "schemaName": "public",
+      "x": 354.03076171875,
+      "y": 12
+    },
+    {
+      "name": "Purchases",
+      "schemaName": "public",
+      "x": 877.69482421875,
+      "y": 12
+    },
+    {
+      "name": "Error_log",
+      "schemaName": "public",
+      "x": 12,
+      "y": 12
+    }
+  ],
+  "tableGroupCollapseStates": [],
+  "stickyNoteLayouts": [],
+  "referencePaths": []
+}

@@ -1,0 +1,85 @@
+Project Cazuela {
+  database_type: 'SQL Server'
+  Note: 'Comics Store Database'
+}
+
+Table Users {
+  user_id INT [pk, increment]
+  user_name NVARCHAR(50) [unique, not null]
+  email NVARCHAR(100) [unique, not null]
+  password_hash NVARCHAR(255) [not null]
+  first_name NVARCHAR(50)
+  last_name NVARCHAR(50)
+  created_at DATETIME [default: `GETDATE()`]
+  updated_at DATETIME [default: `GETDATE()`]
+}
+
+Table Comics {
+  comic_id INT [pk, increment]
+  title NVARCHAR(150) [not null]
+  author NVARCHAR(100)
+  publisher NVARCHAR(100)
+  genre NVARCHAR(50)
+  publication_date DATE
+  price DECIMAL(10,2) [not null]
+  stock_quantity INT [default: 0]
+  sold_quantity INT [default: 0]
+  review_quantity INT [default: 0]
+  description NVARCHAR(MAX)
+  cover_image_url NVARCHAR(255)
+  created_at DATETIME [default: `GETDATE()`]
+  updated_at DATETIME [default: `GETDATE()`]
+}
+
+Table Orders {
+  order_id INT [pk, increment]
+  user_id INT [ref: > Users.user_id]
+  items NVARCHAR(MAX) [not null, note: 'JSON array of items']
+  order_date DATETIME [default: `GETDATE()`]
+  total_amount DECIMAL(10,2) [not null]
+  status NVARCHAR(50) [default: 'Pending']
+  updated_at DATETIME [default: `GETDATE()`]
+}
+
+Table Reviews {
+  review_id INT [pk, increment]
+  comic_id INT [ref: > Comics.comic_id]
+  user_id INT [ref: > Users.user_id]
+  rating DECIMAL(2,1)
+  review_text NVARCHAR(MAX)
+  created_at DATETIME [default: `GETDATE()`]
+  updated_at DATETIME [default: `GETDATE()`]
+}
+
+Table Suppliers {
+  supplier_id INT [pk, increment]
+  supplier_name NVARCHAR(100) [not null]
+  contact_name NVARCHAR(100)
+  address NVARCHAR(255)
+  city NVARCHAR(100)
+  state NVARCHAR(100)
+  country NVARCHAR(100)
+  postal_code NVARCHAR(20)
+  phone_number NVARCHAR(20)
+  email NVARCHAR(100)
+  created_at DATETIME [default: `GETDATE()`]
+  updated_at DATETIME [default: `GETDATE()`]
+}
+
+Table Purchases {
+  purchase_id INT [pk, increment]
+  supplier_id INT [ref: > Suppliers.supplier_id]
+  purchase_date DATETIME [default: `GETDATE()`]
+  total_amount DECIMAL(10,2) [not null]
+  status NVARCHAR(50) [default: 'Pending']
+  items NVARCHAR(MAX) [not null, note: 'JSON array of items']
+  created_at DATETIME [default: `GETDATE()`]
+  updated_at DATETIME [default: `GETDATE()`]
+}
+
+Table Error_log {
+  log_id INT [pk, increment]
+  error_message NVARCHAR(4000)
+  error_stack NVARCHAR(4000)
+  created_at DATETIME [default: `GETDATE()`]
+}
