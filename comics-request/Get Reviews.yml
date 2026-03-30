@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: http://localhost:4000/reviews/1
+  url: http://localhost:4000/reviews/:comicId
+  params:
+    - name: comicId
+      value: "1"
+      type: path
   auth: inherit
 
 settings:
