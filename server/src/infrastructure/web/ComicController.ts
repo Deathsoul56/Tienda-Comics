@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
-import { GetComicsUseCase, GetComicFiltersUseCase } from '../../application/usecases';
+import { GetComicsUseCase, GetComicFiltersUseCase, GetComicByIdUseCase } from '../../application/usecases';
 import { ComicFilters } from '../../domain/repositories';
 
 export class ComicController {
   constructor(
     private getComicsUseCase: GetComicsUseCase,
-    private getComicFiltersUseCase: GetComicFiltersUseCase
+    private getComicFiltersUseCase: GetComicFiltersUseCase,
+    private getComicByIdUseCase: GetComicByIdUseCase
   ) {}
 
   async getComics(req: Request, res: Response): Promise<void> {
@@ -23,6 +24,25 @@ export class ComicController {
     } catch (error) {
       console.error('Error getting comics:', error);
       res.status(500).json({ error: 'Failed to get comics' });
+    }
+  }
+
+  async getComicById(req: Request, res: Response): Promise<void> {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        res.status(400).json({ error: 'Invalid ID format' });
+        return;
+      }
+      const comic = await this.getComicByIdUseCase.execute(id);
+      if (comic) {
+        res.json(comic);
+      } else {
+        res.status(404).json({ error: 'Comic not found' });
+      }
+    } catch (error) {
+      console.error('Error getting comic by id:', error);
+      res.status(500).json({ error: 'Failed to get comic details' });
     }
   }
 

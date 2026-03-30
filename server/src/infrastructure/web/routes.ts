@@ -15,6 +15,7 @@ export function createRoutes(
   // Comic routes
   router.get('/comics', (req, res) => comicController.getComics(req, res));
   router.get('/comics/filters', (req, res) => comicController.getComicFilters(req, res));
+  router.get('/comics/:id', (req, res) => comicController.getComicById(req, res));
 
   // Order routes
   router.post('/orders', (req, res) => orderController.createOrder(req, res));

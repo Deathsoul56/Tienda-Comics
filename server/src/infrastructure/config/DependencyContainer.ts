@@ -12,6 +12,7 @@ import {
 import {
   GetComicsUseCase,
   GetComicFiltersUseCase,
+  GetComicByIdUseCase,
   CreateOrderUseCase,
   GetReviewsUseCase,
   GetSalesUseCase,
@@ -36,6 +37,7 @@ export class DependencyContainer {
   // Use Cases
   public readonly getComicsUseCase: GetComicsUseCase;
   public readonly getComicFiltersUseCase: GetComicFiltersUseCase;
+  public readonly getComicByIdUseCase: GetComicByIdUseCase;
   public readonly createOrderUseCase: CreateOrderUseCase;
   public readonly getReviewsUseCase: GetReviewsUseCase;
   public readonly getSalesUseCase: GetSalesUseCase;
@@ -57,6 +59,7 @@ export class DependencyContainer {
     // Initialize use cases
     this.getComicsUseCase = new GetComicsUseCase(this.comicRepository);
     this.getComicFiltersUseCase = new GetComicFiltersUseCase(this.comicRepository);
+    this.getComicByIdUseCase = new GetComicByIdUseCase(this.comicRepository);
     this.createOrderUseCase = new CreateOrderUseCase(this.orderRepository, this.comicRepository);
     this.getReviewsUseCase = new GetReviewsUseCase(this.reviewRepository);
     this.getSalesUseCase = new GetSalesUseCase(this.orderRepository);
@@ -64,7 +67,8 @@ export class DependencyContainer {
     // Initialize controllers
     this.comicController = new ComicController(
       this.getComicsUseCase,
-      this.getComicFiltersUseCase
+      this.getComicFiltersUseCase,
+      this.getComicByIdUseCase
     );
 
     this.orderController = new OrderController(
