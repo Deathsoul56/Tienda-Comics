@@ -2,6 +2,46 @@ opencollection: 1.0.0
 
 info:
   name: comics-request
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+docs:
+  content: |
+    # 🦸‍♂️ Hexagonal Comic Store API Docs
+
+    Bienvenido a la colección oficial de Bruno para probar los endpoints de nuestra tienda de cómics. A continuación encuentras la guía estructurada de recursos:
+
+    ## 🔐 Autenticación
+    - **Registro (`POST /auth/register`)**: Crea una cuenta nueva proporcionando `user_name`, `email`, `password`, `first_name`, y `last_name`.
+    - **Login (`POST /auth/login`)**: Inicia sesión usando correo y contraseña. Retorna un JWT (`token`) requerido para operaciones protegidas.
+    - **Cambiar Usuario (`PATCH /auth/change-username`)**: [Requiere Auth JWT] Permite modificar tu alias de perfil usando tu `email` y `new_username`.
+    - **Eliminar Usuario (`DELETE /auth/test-delete`)**: *(Para propósitos de QA)* Limpia un usuario de prueba como "john.doe@example.com".
+
+    ## 📚 Cómics
+    - **Catálogo Filtrado (`GET /comics`)**: Extrae la lista de cómics. Soporta query params: `?author=x`, `&genre=y`, `&priceRange=1-5`, `&order=price_desc`.
+    - **Filtros Disponibles (`GET /comics/filters`)**: Extrae un mapeo de todos los posibles géneros, publicadores y autores dados de alta en DB. Útil para rellenar comboboxes.
+    - **Detalle de Cómic (`GET /comics/:id`)**: Obtiene la información exahustiva de un título particular.
+
+    ## 🛒 Ventas y Pedidos
+    - **Registrar Compra (`POST /orders`)**: Crea un nuevo ticket vinculando el `user_id` con arreglos de `items` (cantidades y precios).
+    - **Historial de Cliente (`GET /ventas/user/:userId`)**: Retorna una matriz anidada con las compras (y desglose de ítems) pertenecientes a este identificador exacto de usuario.
+    - **Dashboard de Ventas (`GET /ventas`)**: Devuelve todas las ventas a un nivel holístico.
+    - **Dashboard Mensual (`GET /ventas-mensuales`)**: Extrae la analítica procesada agrupada temporalmente por meses para alimentar gráficas Recharts.
+
+    ## ✨ Reseñas
+    - **Leer Reseñas (`GET /reviews/:comic_id`)**: Revisa todos los comentarios de usuarios y calificaciones en estrellas anexados a cierto libro.
+
+    💡 **Pro-Tip de Bruno**: Puedes saltar dinámicamente usando las pestañas `Docs` o reingresar el token capturado con el script del enviroment. Las rutas que tienen el modificador `:id` pueden ajustarse desde la tabla en la pestaña *Params -> Path*.
+  type: text/markdown
 bundled: false
 extensions:
   bruno:
