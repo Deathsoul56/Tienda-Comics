@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: http://localhost:4000/ventas/user/{{userId}}
+  url: http://localhost:4000/ventas/user/:userId
   params:
     - name: userId
-      value: 1
+      value: "2"
       type: path
   auth: inherit
 
