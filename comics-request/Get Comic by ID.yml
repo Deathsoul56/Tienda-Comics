@@ -17,3 +17,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Get Comic by ID
+  **¿Qué hace?**
+  Busca y retorna toda la información detallada de un único cómic usando su ID identificador.
+  
+  **Entrada:** Parámetro de ruta `:id` (ej: /comics/1).
+  
+  **Salida:** Objeto JSON único con todos los campos extendidos del cómic.
+  
+  **Uso en la página:** Se usa dentro de `ComicDetails` para mostrar la vista en pantalla completa de un cómic al hacerle clic.

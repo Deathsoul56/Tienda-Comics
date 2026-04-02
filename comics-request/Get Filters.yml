@@ -13,3 +13,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Get Filters
+  **¿Qué hace?**
+  Extrae todas las opciones disponibles (géneros, autores, editoriales) desde la base de datos para armar los selectores.
+  
+  **Entrada:** Ninguna.
+  
+  **Salida:** Un JSON con arreglos para `authors`, `publishers`, y `genres`.
+  
+  **Uso en la página:** Se invoca en la barra lateral (Sidebar) del Home/Catálogo para rellenar los menús desplegables de filtrado.

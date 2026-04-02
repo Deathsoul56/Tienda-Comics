@@ -13,3 +13,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Get Monthly Sales
+  **¿Qué hace?**
+  Calcula y consolida una vista sumariada agrupando las facturaciones por ciclos mensuales.
+  
+  **Entrada:** Llama a administrador sin parámetros en la ruta plana (Sugerencia de requerimiento Admin).
+  
+  **Salida:** Un JSON con pares Mes-Monto preparados para graficar.
+  
+  **Uso en la página:** Utilizada por la gráfica estática hecha en `recharts` en estadisticas de perfil actual.

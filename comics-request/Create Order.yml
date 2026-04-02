@@ -26,3 +26,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Create Order
+  **¿Qué hace?**
+  Registra una nueva orden/ticket de compra en la base de datos restando el stock de los productos.
+  
+  **Entrada:** Un body JSON con el `user_id`, el `total_amount` y un arreglo `items` (carritos con comic_id y cantidad).
+  
+  **Salida:** Un JSON con el detalle de la confirmación (ej. `Order created successfully`) y el `order_id` generado.
+  
+  **Uso en la página:** Disparado al presionar el botón de "Pagar" o "Confirmar Compra" dentro de `ShoppingCart.tsx`.

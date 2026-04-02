@@ -17,3 +17,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Get Reviews
+  **¿Qué hace?**
+  Recoge todas las valoraciones y comentarios de texto (estrellas) que los usuarios han redactado para cierta obra.
+  
+  **Entrada:** Parámetro de ruta `:comic_id`.
+  
+  **Salida:** Array de objetos Review, indicando `rating`, `comment` y el `user_name` del crítico.
+  
+  **Uso en la página:** Se renderizan en la parte inferior de la vista individual de `ComicDetails`.

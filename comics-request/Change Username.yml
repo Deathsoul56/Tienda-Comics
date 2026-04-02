@@ -26,3 +26,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Change Username
+  **¿Qué hace?**
+  Llama de forma segura al backend para reemplazar el seudónimo en pantalla (`user_name`) del usuario actual.
+  
+  **Entrada:** Body JSON con `email` del usuario autenticado y el `new_username` deseado. (Requiere header Bearer Token de Auth).
+  
+  **Salida:** Un mensaje de éxito con el perfil modificado o un error si el alias ya existe.
+  
+  **Uso en la página:** En el panel de **Datos y Estadísticas** de `UserProfile` al dar clic al lápiz de "Editar".

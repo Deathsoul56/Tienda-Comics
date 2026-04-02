@@ -29,3 +29,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Get Comics
+  **¿Qué hace?**
+  Obtiene el listado principal de cómics. Soporta paginación u ordenamiento basado en los parámetros de búsqueda.
+  
+  **Entrada:** Parámetros Query opcionales (`author`, `publisher`, `genre`, `priceRange`, `order`).
+  
+  **Salida:** Array de objetos Cómic (con `comic_id`, `title`, `price`, `stock`, `cover_image_url`).
+  
+  **Uso en la página:** En el `Home` principal (grilla de cómics) y se refresca automáticamente al cambiar la selección en los filtros.

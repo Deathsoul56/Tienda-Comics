@@ -23,3 +23,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Login User
+  **¿Qué hace?**
+  Valida las credenciales de un visitante e inicia su sesión entregando su carga útil de estado.
+  
+  **Entrada:** Body JSON con su correo (`email`) y `password` plana.
+  
+  **Salida:** Token JWT de autorización y un perfil con `user_id`, `role`, y `user_name`.
+  
+  **Uso en la página:** Modal u obelisco de `Login` inicial cuando no hay un token local guardado. 

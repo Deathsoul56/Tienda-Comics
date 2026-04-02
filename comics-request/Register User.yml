@@ -26,3 +26,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Register User
+  **¿Qué hace?**
+  Inscribe y cifra a un nuevo cliente insertándolo directamente en la tabla Users de la DB.
+  
+  **Entrada:** Obligatoriamente envía `first_name`, `last_name`, `email`, `password` y `user_name`.
+  
+  **Salida:** Mensaje de creación exitosa 201 y asignación de `role: user`.
+  
+  **Uso en la página:** Ejecutado en el formulario de `Register / Crear Cuenta` de tu módulo de autenticación.

@@ -17,3 +17,14 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |
+  # Get User Orders
+  **¿Qué hace?**
+  Recupera todo el historial de pedidos y compras realizadas históricamente por un cliente.
+  
+  **Entrada:** Parámetro de ruta `:userId` (ej: /ventas/user/2).
+  
+  **Salida:** Un arreglo de comprobantes anidados, cada uno detallando fecha, `total_amount` y su lista interna de los cómics comprados.
+  
+  **Uso en la página:** Almacenado en la pestaña "Historial de Compras" dentro de la sección **Mi Perfil / UserProfile**.
